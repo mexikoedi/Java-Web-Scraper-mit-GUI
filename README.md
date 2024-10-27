@@ -40,7 +40,7 @@ TODO
 
 ### Einrichtung des Projekts
 Sie können das Projekt durch die Befolgung der [Installationsanleitung](#Installation-des-Programms) herunterladen oder durch das [Klonen](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) des Projekts in Eclipse einbinden. <br>
-Beachten Sie zuvor die [Informationen zum Java-Projekt](#Installation-des-Programms).
+Beachten Sie zuvor die [Informationen zum Java-Projekt](#Installation-des-Programms). <br>
 Anschließend können Sie in Eclipse das Projekt importieren beziehungsweise öffnen. <br>
 Es werden zuerst Fehler angezeigt, da Eclipse zusätzliche Projektinformationen benötigt. <br>
 Diese können durch das Ergänzen der folgenden zwei Dateien behoben werden: <br>
