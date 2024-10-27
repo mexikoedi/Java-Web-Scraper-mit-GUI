@@ -1,7 +1,7 @@
 # Java Web Scraper mit GUI
 
 ## Allgemeine Informationen
-Dieses Java-Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen über eine grafische Benutzeroberfläche.
+Dieses Java-Programm ermöglicht das unkomplizierte Abrufen von diversen [HKA (Hochschule Karlsruhe – University of Applied Sciences)](https://www.h-ka.de/) Informationen über eine grafische Benutzeroberfläche.
 
 ## Anwenderdokumentation
 ### Voraussetzungen
