@@ -83,11 +83,15 @@ Daraufhin sollte das Java-Projekt nun ordnungsgemäß eingerichtet sein. <br>
 Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbrains.com/de-de/idea/) verwenden sollten, könnte die Einrichtung leicht variieren.
 
 ### Codedokumentation
-#### public Methoden
+<details>
+<summary>public Methoden</summary>
 TODO
+</details>
 
-#### private Methoden
+<details>
+<summary>private Methoden</summary>
 TODO
+</details>
 
 ## Drittanbieterinformationen
 ```
