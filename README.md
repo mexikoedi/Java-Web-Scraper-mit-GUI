@@ -16,7 +16,8 @@ Nun können Sie das Programm über die Datei namens „Java Web Scraper mit GUI.
 ### Verwendung des Programms
 Im Programm können Sie aus einem Dropdown ein oder mehrere Suchwörter, zu welchen Sie Informationen benötigen, auswählen. <br>
 Durch den Knopf „Abrufen“ werden die Informationen zu den davor ausgewählten Suchwörtern abgerufen, formatiert und entsprechend im Bereich „Daten“ angezeigt. <br>
-Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen.
+Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen. <br>
+TODO
 
 ### Beispiele
 TODO
@@ -27,6 +28,7 @@ Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mi
 Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) mit der Version „22.0.2“ im Einsatz. <br>
 Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
+Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt. <br>
 Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
 
 ### Struktur des Projekts
