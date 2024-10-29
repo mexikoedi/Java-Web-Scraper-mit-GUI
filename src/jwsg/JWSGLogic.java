@@ -26,17 +26,16 @@ public class JWSGLogic {
 	 * Diese Methode gibt eine Map zurück, die die Suchwörter und die zugehörigen
 	 * Daten enthält.
 	 * 
-	 * @return scrapedDataMap Die Map, die die Suchwörter und die zugehörigen Daten
-	 *         enthält.
+	 * @return Die Map, die die Suchwörter und die zugehörigen Daten enthält.
 	 */
 	public Map<String, List<String>> getScrapedDataMap() {
 		return scrapedDataMap;
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um zu überprüfen, ob die Schaltfläche "Daten
-	 * abrufen" gedrückt wurde. Zudem werden die letzten ausgewählten Suchwörter
-	 * gespeichert. Enthält verschiedene Überprüfungen, um Sonderfälle abzudecken.
+	 * Diese Methode wird verwendet, um zu überprüfen, ob die Schaltfläche "Abrufen"
+	 * gedrückt wurde. Zudem werden die letzten ausgewählten Suchwörter gespeichert.
+	 * Enthält verschiedene Überprüfungen, um Sonderfälle abzudecken.
 	 * 
 	 * @param list Die Liste der ausgewählten Suchwörter.
 	 */
@@ -101,7 +100,8 @@ public class JWSGLogic {
 		List<String> scrapedData = new ArrayList<>();
 
 		if (websiteElements.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Keine Daten gefunden! Website-Strukur aktualisiert?", "Fehler", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Keine Daten gefunden! Website-Strukur aktualisiert?", "Fehler",
+					JOptionPane.ERROR_MESSAGE);
 
 			return null;
 		}
