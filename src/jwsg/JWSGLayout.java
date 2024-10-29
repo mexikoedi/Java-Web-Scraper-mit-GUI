@@ -352,7 +352,8 @@ public class JWSGLayout {
 	/**
 	 * Inhalte der Liste initialisieren.
 	 * 
-	 * @return DefaultListModel<String>
+	 * @return DefaultListModel<String> welche die Liste mit den initialen Inhalten
+	 *         enthält.
 	 */
 	private DefaultListModel<String> initList() {
 		String[] options = { "Studiengänge Bachelor", "Studiengänge Master" };
