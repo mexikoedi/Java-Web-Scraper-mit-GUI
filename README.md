@@ -86,22 +86,89 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 <summary>public Methoden</summary> <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java <br>
-TODO
+
+```java
+/**
+ * Start der Anwendung.
+ */
+public static void main(String[] args)
+
+/**
+ * Standardkonstruktur. Anwendung erstellen.
+ */
+public JWSGLayout()
+
+/**
+ * Gescrapte Daten formatieren und anzeigen.
+ * 
+ * @param selectedCategories Die Liste der ausgewählten Kategorien.
+ * @param scrapedData        Die gescrapten Daten.
+ */
+public void initData(List<String> selectedCategories, Map<String, List<String>> scrapedData)
+```
 
 Paket: jwsg <br>
 Datei: JWSGLogic.java <br>
-TODO
+
+```java
+/**
+ * Diese Methode gibt eine Map zurück, die die Suchwörter und die zugehörigen
+ * Daten enthält.
+ * 
+ * @return Die Map, die die Suchwörter und die zugehörigen Daten enthält.
+ */
+public Map<String, List<String>> getScrapedDataMap()
+
+/**
+ * Diese Methode wird verwendet, um zu überprüfen, ob die Schaltfläche "Abrufen"
+ * gedrückt wurde. Zudem werden die letzten ausgewählten Suchwörter gespeichert.
+ * Enthält verschiedene Überprüfungen, um Sonderfälle abzudecken.
+ * 
+ * @param list Die Liste der ausgewählten Suchwörter.
+ */
+public void checkButtonPressed(List<String> list)
+```
 </details>
 
 <details>
 <summary>private Methoden</summary> <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java <br>
-TODO
+
+```java
+/**
+ * Inhalte vom Frame initialisieren.
+ */
+private void initialize()
+
+/**
+ * Inhalte der Liste initialisieren.
+ * 
+ * @return DefaultListModel<String>
+ */
+private DefaultListModel<String> initList()
+```
 
 Paket: jwsg <br>
 Datei: JWSGLogic.java <br>
-TODO
+
+```java	
+/**
+ * Diese Methode wird verwendet, um die Daten von den ausgewählten Suchwörtern
+ * mit ihren entsprechenden URLs parallel abzurufen.
+ *
+ * @param categories Die Liste der ausgewählten Suchwörter.
+ */
+private void scrapData(List<String> categories)
+
+/**
+ * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
+ * 
+ * @param website Die Webseite, von der die Daten extrahiert werden sollen.
+ * @return Die Liste, die die extrahierten Daten enthält.
+ */
+private List<String> processWebsiteData(Document website)
+```
 </details>
 
 ## Drittanbieterinformationen
