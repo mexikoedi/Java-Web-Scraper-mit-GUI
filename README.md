@@ -34,9 +34,8 @@ Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
 ### Struktur des Projekts
 Der Ordner namens „rsc“ beinhaltet das Icon des Programms, welches „Icon.png“ bezeichnet wird. <br>
 Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.18.1.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
-Im Paket „jwsg“ befindet sich die Datei mit dem Namen „JWSGUI.java“, welche die grafische Oberfläche beherbergt. <br>
-Zudem existiert noch die Datei namens „TODO“, welche für die Logik zuständig ist. <br>
-TODO
+Im Paket „jwsg“ befindet sich die Datei mit dem Namen „JWSGLayout.java“, welche die grafische Oberfläche beherbergt. <br>
+Zudem existiert noch die Datei namens „JWSGLogic.java“, welche für die Logik zuständig ist.
 
 ### Einrichtung des Projekts
 Sie können das Projekt durch die Befolgung der [Installationsanleitung](#Installation-des-Programms) herunterladen oder durch das [Klonen](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) des Projekts in Eclipse einbinden. <br>
@@ -84,12 +83,24 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 
 ### Codedokumentation
 <details>
-<summary>public Methoden</summary>
+<summary>public Methoden</summary> <br>
+Paket: jwsg <br>
+Datei: JWSGLayout.java <br>
+TODO
+
+Paket: jwsg <br>
+Datei: JWSGLogic.java <br>
 TODO
 </details>
 
 <details>
-<summary>private Methoden</summary>
+<summary>private Methoden</summary> <br>
+Paket: jwsg <br>
+Datei: JWSGLayout.java <br>
+TODO
+
+Paket: jwsg <br>
+Datei: JWSGLogic.java <br>
 TODO
 </details>
 
