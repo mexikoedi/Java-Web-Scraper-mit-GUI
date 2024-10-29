@@ -19,6 +19,9 @@ Durch den Knopf „Abrufen“ werden die Informationen zu den davor ausgewählte
 Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen. <br>
 TODO
 
+### Leistung
+TODO
+
 ### Beispiele
 TODO
 
