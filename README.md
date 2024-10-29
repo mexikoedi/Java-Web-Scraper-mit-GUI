@@ -84,6 +84,7 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 ### Codedokumentation
 <details>
 <summary>public Methoden</summary> <br>
+TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java <br>
 
@@ -132,6 +133,7 @@ public void checkButtonPressed(List<String> list)
 
 <details>
 <summary>private Methoden</summary> <br>
+TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java <br>
 
