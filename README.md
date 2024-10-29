@@ -129,8 +129,10 @@ public Map<String, List<String>> getScrapedDataMap()
  * Enthält verschiedene Überprüfungen, um Sonderfälle abzudecken.
  * 
  * @param list Die Liste der ausgewählten Suchwörter.
+ * @return true, wenn die Schaltfläche gedrückt wurde und keiner der Sonderfälle
+ *         aufgetreten ist, sonst false.
  */
-public void checkButtonPressed(List<String> list)
+public boolean checkButtonPressed(List<String> list)
 ```
 </details>
 

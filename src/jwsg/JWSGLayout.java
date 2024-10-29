@@ -189,7 +189,8 @@ public class JWSGLayout {
 		textAreaAppExplanation.setWrapStyleWord(true);
 		textAreaAppExplanation.setLineWrap(true);
 		textAreaAppExplanation.setText(
-				"Dieses Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen. Nutzen Sie die Dropdown-Liste, um nach einer oder mehreren Informationen zu suchen." + "\n© 2024-" + currentYear + " mexikoedi");
+				"Dieses Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen. Nutzen Sie die Dropdown-Liste, um nach einer oder mehreren Informationen zu suchen."
+						+ "\n© 2024-" + currentYear + " mexikoedi");
 		textAreaAppExplanation.setEditable(false);
 		gbc_textAreaAppExplanation = new GridBagConstraints();
 		gbc_textAreaAppExplanation.fill = GridBagConstraints.HORIZONTAL;
@@ -266,12 +267,15 @@ public class JWSGLayout {
 		btnData = new JButton("Abrufen");
 		btnData.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnData.addActionListener(e -> {
-			if (dataTextArea != null) {
+			boolean scraped = logic.checkButtonPressed(listData.getSelectedValuesList());
+
+			if (dataTextArea != null && scraped) {
 				panel.remove(dataScrollPane);
 			}
 
-			logic.checkButtonPressed(listData.getSelectedValuesList());
-			initData(listData.getSelectedValuesList(), logic.getScrapedDataMap());
+			if (scraped) {
+				initData(listData.getSelectedValuesList(), logic.getScrapedDataMap());
+			}
 		});
 		gbc_btnData = new GridBagConstraints();
 		gbc_btnData.gridx = 3;

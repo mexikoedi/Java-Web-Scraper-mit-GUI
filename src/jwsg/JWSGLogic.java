@@ -38,24 +38,33 @@ public class JWSGLogic {
 	 * Enthält verschiedene Überprüfungen, um Sonderfälle abzudecken.
 	 * 
 	 * @param list Die Liste der ausgewählten Suchwörter.
+	 * @return true, wenn die Schaltfläche gedrückt wurde und keiner der Sonderfälle
+	 *         aufgetreten ist, sonst false.
 	 */
-	public void checkButtonPressed(List<String> list) {
+	public boolean checkButtonPressed(List<String> list) {
 		if (list.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Bitte wählen Sie mindestens ein Suchwort aus!", "Hinweis",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			return;
+			return false;
 		}
 
-		if (list.equals(lastSelectedCategories)) {
+		if (list.equals(lastSelectedCategories) && list.size() == 1) {
+			JOptionPane.showMessageDialog(null, "Sie haben schon die Daten für dieses Suchwort!", "Hinweis",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			return false;
+		} else if (list.equals(lastSelectedCategories) && list.size() > 1) {
 			JOptionPane.showMessageDialog(null, "Sie haben schon die Daten für diese Suchwörter!", "Hinweis",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			return;
+			return false;
 		}
 
 		scrapData(list);
 		lastSelectedCategories = new ArrayList<>(list);
+
+		return true;
 	}
 
 	/**
