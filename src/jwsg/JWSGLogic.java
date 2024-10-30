@@ -23,8 +23,8 @@ public class JWSGLogic {
 	}
 
 	/**
-	 * Diese Methode gibt eine Map zurück, die die Suchwörter und die zugehörigen
-	 * Daten enthält.
+	 * Diese Methode wird verwendet, um die Daten zu erhalten, die von den
+	 * ausgewählten Suchwörtern abhängen.
 	 * 
 	 * @return Die Map, die die Suchwörter und die zugehörigen Daten enthält.
 	 */
@@ -79,13 +79,13 @@ public class JWSGLogic {
 
 		categories.parallelStream().forEach(category -> {
 			String url = keywordUrlMap.get(category);
-			List<String> studyPrograms = new ArrayList<>();
+			List<String> scrapedData = new ArrayList<>();
 			Document website = null;
 
 			try {
 				website = Jsoup.connect(url).get();
-				studyPrograms.addAll(processWebsiteData(website));
-				scrapedDataMap.put(category, studyPrograms);
+				scrapedData.addAll(processWebsiteData(website));
+				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Fehler",
 						"URL: " + url + " nicht verfügbar! Versuchen Sie es später erneut.", JOptionPane.ERROR_MESSAGE);

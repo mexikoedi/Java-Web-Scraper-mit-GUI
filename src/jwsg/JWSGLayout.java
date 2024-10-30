@@ -66,7 +66,7 @@ public class JWSGLayout {
 	private int currentYear = currentDate.getYear();
 
 	/**
-	 * Start der Anwendung.
+	 * Start der Anwendung. Erzeugt das Fenster und ansonsten erscheint ein Fehler.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -86,14 +86,15 @@ public class JWSGLayout {
 	}
 
 	/**
-	 * Standardkonstruktur. Anwendung erstellen.
+	 * Standardkonstruktur. Inititialisierung der Anwendung, um die GUI zu
+	 * erstellen.
 	 */
 	public JWSGLayout() {
 		initialize();
 	}
 
 	/**
-	 * Gescrapte Daten formatieren und anzeigen.
+	 * Gescrapte Daten werden formatiert und in einer JTextArea angezeigt.
 	 * 
 	 * @param selectedCategories Die Liste der ausgewählten Kategorien.
 	 * @param scrapedData        Die gescrapten Daten.
@@ -140,7 +141,8 @@ public class JWSGLayout {
 	}
 
 	/**
-	 * Inhalte vom Frame initialisieren.
+	 * GUI-Inhalte vom Frame werden initialisiert und das Fenster wird nach dem OS
+	 * angepasst, ansonsten wird ein Fehler ausgegeben.
 	 */
 	private void initialize() {
 		// Logic-Objekt erstellen für ActionListener
@@ -350,7 +352,7 @@ public class JWSGLayout {
 	}
 
 	/**
-	 * Inhalte der Liste initialisieren.
+	 * Jlist wird mit den vordefinierten Suchwörtern initialisiert.
 	 * 
 	 * @return DefaultListModel<String> welche die Liste mit den initialen Inhalten
 	 *         enthält.
