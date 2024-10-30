@@ -151,7 +151,7 @@ Datei: JWSGLayout.java <br>
 private void initialize()
 
 /**
- * Jlist wird mit den vordefinierten Suchwörtern initialisiert.
+ * JList wird mit den vordefinierten Suchwörtern initialisiert.
  * 
  * @return DefaultListModel<String> welche die Liste mit den initialen Inhalten
  *         enthält.
