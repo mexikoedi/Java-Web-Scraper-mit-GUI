@@ -5,7 +5,7 @@ Dieses Java-Programm ermöglicht das unkomplizierte Abrufen von diversen [HKA (H
 
 ## Anwenderdokumentation
 ### Voraussetzungen
-Es muss vor der Benutzung dieses Programms [Java](https://www.java.com/de/download/) auf dem Computer installiert werden.
+Es muss vor der Benutzung dieses Programms [Java JDK 22](https://www.oracle.com/de/java/technologies/downloads/) oder höher auf dem Computer installiert werden.
 
 ### Installation des Programms
 Sie können das Programm herunterladen, indem Sie den grünen Knopf „Code“ und dann „ZIP herunterladen“ auswählen. <br> 
