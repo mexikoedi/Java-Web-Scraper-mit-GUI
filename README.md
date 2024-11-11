@@ -87,10 +87,10 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 
 ### Codedokumentation
 <details>
-<summary>public Methoden</summary> <br>
+<summary>public Methoden</summary>
 TODO <br>
 Paket: jwsg <br>
-Datei: JWSGLayout.java <br>
+Datei: JWSGLayout.java
 
 ```java
 /**
@@ -114,7 +114,7 @@ public void initData(List<String> selectedCategories, Map<String, List<String>> 
 ```
 
 Paket: jwsg <br>
-Datei: JWSGLogic.java <br>
+Datei: JWSGLogic.java
 
 ```java
 /**
@@ -138,7 +138,7 @@ public boolean checkButtonPressed(List<String> list)
 ```
 
 Paket: jwsg <br>
-Datei: JWSGScrapingConfig.java <br>
+Datei: JWSGScrapingConfig.java
 
 ```java
 /**
@@ -195,10 +195,10 @@ public static Map<String, String> getKeywordSelectorMap()
 </details>
 
 <details>
-<summary>private Methoden</summary> <br>
+<summary>private Methoden</summary>
 TODO <br>
 Paket: jwsg <br>
-Datei: JWSGLayout.java <br>
+Datei: JWSGLayout.java
 
 ```java
 /**
@@ -217,7 +217,7 @@ private DefaultListModel<String> initList()
 ```
 
 Paket: jwsg <br>
-Datei: JWSGLogic.java <br>
+Datei: JWSGLogic.java
 
 ```java	
 /**
