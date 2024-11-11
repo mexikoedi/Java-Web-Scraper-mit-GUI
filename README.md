@@ -38,7 +38,8 @@ Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
 Der Ordner namens „rsc“ beinhaltet das Icon des Programms, welches „Icon.png“ bezeichnet wird. <br>
 Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.18.1.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
 Im Paket „jwsg“ befindet sich die Datei mit dem Namen „JWSGLayout.java“, welche die grafische Oberfläche beherbergt. <br>
-Zudem existiert noch die Datei namens „JWSGLogic.java“, welche für die Logik zuständig ist.
+Die Datei namens „JWSGLogic.java“ ist für die Logik zuständig. <br>
+Zudem existiert noch die Datei namens „JWSGScrapingConfig.java“, welche die für das Scrapen benötigten URLs, Suchwörter und Webseitenelemente enthält. (Diese können bei Bedarf angepasst werden.)
 
 ### Einrichtung des Projekts
 Sie können das Projekt durch die Befolgung der [Installationsanleitung](#Installation-des-Programms) herunterladen oder durch das [Klonen](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) des Projekts in Eclipse einbinden. <br>
@@ -135,6 +136,62 @@ public Map<String, List<String>> getScrapedDataMap()
  */
 public boolean checkButtonPressed(List<String> list)
 ```
+
+Paket: jwsg <br>
+Datei: JWSGScrapingConfig.java <br>
+
+```java
+/**
+ * Diese Methode wird verwendet, um die URL für das angegebene Suchwort aus
+ * einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das die URL abgerufen werden soll.
+ * @return Die URL für das angegebene Suchwort.
+ */
+public static String getUrl(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um die Elementklasse für das angegebene
+ * Suchwort aus einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das die Elementklasse abgerufen werden soll.
+ * @return Die Elementklasse für das angegebene Suchwort.
+ */
+public static String getElementClass(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Selektor für spezifische Links für das
+ * angegebene Suchwort aus einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und URLs zu
+ * erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und URLs.
+ */
+public static Map<String, String> getKeywordUrlMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Elementklassen zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Elementklassen.
+ */
+public static Map<String, String> getKeywordElementMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links.
+ */
+public static Map<String, String> getKeywordSelectorMap()
+```
 </details>
 
 <details>
@@ -174,10 +231,13 @@ private void scrapData(List<String> categories)
 /**
  * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
  * 
- * @param website Die Webseite, von der die Daten extrahiert werden sollen.
+ * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+ * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+ * @param linkSelector Der Selektor für spezifische Links innerhalb der
+ *                     Elemente.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processWebsiteData(Document website)
+private List<String> processWebsiteData(Document website, String elementClass, String linkSelector)
 ```
 </details>
 

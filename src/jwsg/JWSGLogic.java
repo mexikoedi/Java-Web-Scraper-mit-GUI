@@ -2,7 +2,6 @@ package jwsg;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,11 +15,6 @@ public class JWSGLogic {
 	// Datenstrukturen
 	private List<String> lastSelectedCategories = new ArrayList<>();
 	private static final Map<String, List<String>> scrapedDataMap = new ConcurrentHashMap<>();
-	private static final Map<String, String> keywordUrlMap = new HashMap<>();
-	static {
-		keywordUrlMap.put("Studiengänge Bachelor", "https://www.h-ka.de/studieren/studienangebot/bachelor");
-		keywordUrlMap.put("Studiengänge Master", "https://www.h-ka.de/studieren/studienangebot/master");
-	}
 
 	/**
 	 * Diese Methode wird verwendet, um die Daten zu erhalten, die von den
@@ -78,13 +72,15 @@ public class JWSGLogic {
 		scrapedDataMap.clear();
 
 		categories.parallelStream().forEach(category -> {
-			String url = keywordUrlMap.get(category);
+			String url = JWSGScrapingConfig.getUrl(category);
+			String elementClass = JWSGScrapingConfig.getElementClass(category);
+			String linkSelector = JWSGScrapingConfig.getSelector(category);
 			List<String> scrapedData = new ArrayList<>();
 			Document website = null;
 
 			try {
 				website = Jsoup.connect(url).get();
-				scrapedData.addAll(processWebsiteData(website));
+				scrapedData.addAll(processWebsiteData(website, elementClass, linkSelector));
 				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Fehler",
@@ -99,11 +95,14 @@ public class JWSGLogic {
 	/**
 	 * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
 	 * 
-	 * @param website Die Webseite, von der die Daten extrahiert werden sollen.
+	 * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+	 * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+	 * @param linkSelector Der Selektor für spezifische Links innerhalb der
+	 *                     Elemente.
 	 * @return Die Liste, die die extrahierten Daten enthält.
 	 */
-	private List<String> processWebsiteData(Document website) {
-		Elements websiteElements = website.getElementsByClass("table__cell-title");
+	private List<String> processWebsiteData(Document website, String elementClass, String linkSelector) {
+		Elements websiteElements = website.getElementsByClass(elementClass);
 		Element linkElement = null;
 		String scrapedName = null;
 		List<String> scrapedData = new ArrayList<>();
@@ -116,7 +115,7 @@ public class JWSGLogic {
 		}
 
 		for (Element element : websiteElements) {
-			linkElement = element.selectFirst("a.c-in2studyfinder__link");
+			linkElement = element.selectFirst(linkSelector);
 
 			if (linkElement != null) {
 				scrapedName = linkElement.ownText().trim();
