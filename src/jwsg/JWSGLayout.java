@@ -358,11 +358,10 @@ public class JWSGLayout {
 	 *         enthält.
 	 */
 	private DefaultListModel<String> initList() {
-		String[] options = { "Studiengänge Bachelor", "Studiengänge Master" };
 		DefaultListModel<String> listModel = new DefaultListModel<>();
 
-		for (String option : options) {
-			listModel.addElement(option);
+		for (String keyword : JWSGScrapingConfig.getKeywordUrlMap().keySet()) {
+			listModel.addElement(keyword);
 		}
 
 		return listModel;
