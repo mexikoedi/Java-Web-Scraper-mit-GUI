@@ -88,6 +88,7 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 ### Codedokumentation
 <details>
 <summary>public Methoden</summary>
+
 TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java
@@ -196,6 +197,7 @@ public static Map<String, String> getKeywordSelectorMap()
 
 <details>
 <summary>private Methoden</summary>
+
 TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java
