@@ -161,6 +161,33 @@ public static String getUrl(String keyword)
 public static String getElementClass(String keyword)
 
 /**
+ * Diese Methode wird verwendet, um den Container für das angegebene Suchwort
+ * aus einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Container abgerufen werden soll.
+ * @return Der Container für das angegebene Suchwort.
+ */
+public static String getContainer(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um die ID für das angegebene Suchwort aus einer
+ * Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das die ID abgerufen werden soll.
+ * @return Die ID für das angegebene Suchwort.
+ */
+public static String getId(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Tag für das angegebene Suchwort aus
+ * einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Tag abgerufen werden soll.
+ * @return Der Tag für das angegebene Suchwort.
+ */
+public static String getTag(String keyword)
+
+/**
  * Diese Methode wird verwendet, um den Selektor für spezifische Links für das
  * angegebene Suchwort aus einer Map abzurufen.
  * 
@@ -184,6 +211,30 @@ public static Map<String, String> getKeywordUrlMap()
  * @return Die gesamte Map mit Suchwörtern und Elementklassen.
  */
 public static Map<String, String> getKeywordElementMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Containern zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Containern.
+ */
+public static Map<String, String> getKeywordContainerMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und IDs zu
+ * erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und IDs.
+ */
+public static Map<String, String> getKeywordIdMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Tags zu
+ * erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Tags.
+ */
+public static Map<String, String> getKeywordTagMap()
 
 /**
  * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
@@ -235,11 +286,14 @@ private void scrapData(List<String> categories)
  * 
  * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
  * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+ * @param container    Der Container für die jeweiligen Suchwörter.
+ * @param id           Die ID für die jeweiligen Suchwörter.
+ * @param tag          Der Tag für die jeweiligen Suchwörter.
  * @param linkSelector Der Selektor für spezifische Links innerhalb der
  *                     Elemente.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processWebsiteData(Document website, String elementClass, String linkSelector)
+private List<String> processWebsiteData(Document website, String elementClass, String container, String id, String tag, String linkSelector)
 ```
 </details>
 

@@ -104,14 +104,16 @@ public class JWSGLayout {
 
 		// Durch alle Kategorien durchgehen, formatieren und Daten hinzufügen
 		for (String category : selectedCategories) {
-			List<String> programs = scrapedData.get(category);
+			List<String> details = scrapedData.get(category);
 
-			if (programs != null && !programs.isEmpty()) {
+			if (details != null && !details.isEmpty()) {
 				dataBuilder.append("=".repeat(category.length() + 2)).append("\n").append(category.toUpperCase())
 						.append("\n").append("=".repeat(category.length() + 2)).append("\n");
 
-				for (String program : programs) {
-					dataBuilder.append(program).append("\n");
+				for (String detail : details) {
+					if (!detail.isEmpty()) {
+						dataBuilder.append(detail).append("\n");
+					}
 				}
 
 				dataBuilder.append("\n");

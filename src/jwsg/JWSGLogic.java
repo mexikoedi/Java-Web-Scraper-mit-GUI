@@ -74,13 +74,16 @@ public class JWSGLogic {
 		categories.parallelStream().forEach(category -> {
 			String url = JWSGScrapingConfig.getUrl(category);
 			String elementClass = JWSGScrapingConfig.getElementClass(category);
+			String container = JWSGScrapingConfig.getContainer(category);
+			String id = JWSGScrapingConfig.getId(category);
+			String tag = JWSGScrapingConfig.getTag(category);
 			String linkSelector = JWSGScrapingConfig.getSelector(category);
 			List<String> scrapedData = new ArrayList<>();
 			Document website = null;
 
 			try {
 				website = Jsoup.connect(url).get();
-				scrapedData.addAll(processWebsiteData(website, elementClass, linkSelector));
+				scrapedData.addAll(processWebsiteData(website, elementClass, container, id, tag, linkSelector));
 				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Fehler",
@@ -97,14 +100,19 @@ public class JWSGLogic {
 	 * 
 	 * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
 	 * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+	 * @param container    Der Container für die jeweiligen Suchwörter.
+	 * @param id           Die ID für die jeweiligen Suchwörter.
+	 * @param tag          Der Tag für die jeweiligen Suchwörter.
 	 * @param linkSelector Der Selektor für spezifische Links innerhalb der
 	 *                     Elemente.
 	 * @return Die Liste, die die extrahierten Daten enthält.
 	 */
-	private List<String> processWebsiteData(Document website, String elementClass, String linkSelector) {
+	private List<String> processWebsiteData(Document website, String elementClass, String container, String id,
+			String tag, String linkSelector) {
 		Elements websiteElements = website.getElementsByClass(elementClass);
+		Elements containerElements = null;
+		Elements tagElements = null;
 		Element linkElement = null;
-		String scrapedName = null;
 		List<String> scrapedData = new ArrayList<>();
 
 		if (websiteElements.isEmpty()) {
@@ -115,11 +123,24 @@ public class JWSGLogic {
 		}
 
 		for (Element element : websiteElements) {
-			linkElement = element.selectFirst(linkSelector);
+			if (linkSelector == null) {
+				containerElements = element.getElementsByClass(container);
 
-			if (linkElement != null) {
-				scrapedName = linkElement.ownText().trim();
-				scrapedData.add(scrapedName);
+				for (Element containerElement : containerElements) {
+					if (containerElement.id().equals(id)) {
+						tagElements = containerElement.getElementsByTag(tag);
+
+						for (Element tagElement : tagElements) {
+							scrapedData.add(tagElement.text().trim());
+						}
+					}
+				}
+			} else {
+				linkElement = element.selectFirst(linkSelector);
+
+				if (linkElement != null) {
+					scrapedData.add(linkElement.ownText().trim());
+				}
 			}
 		}
 
