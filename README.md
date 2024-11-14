@@ -283,8 +283,10 @@ private void scrapData(List<String> categories)
 
 /**
  * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
+ * Bei einem Fehler wird eine entsprechende Fehlermeldung angezeigt.
  * 
  * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+ * @param category     Die Kategorie, die das Suchwort repräsentiert.
  * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
  * @param container    Der Container für die jeweiligen Suchwörter.
  * @param id           Die ID für die jeweiligen Suchwörter.
@@ -293,7 +295,7 @@ private void scrapData(List<String> categories)
  *                     Elemente.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processWebsiteData(Document website, String elementClass, String container, String id, String tag, String linkSelector)
+private List<String> processWebsiteData(Document website, String category, String elementClass, String container, String id, String tag, String linkSelector)
 ```
 </details>
 

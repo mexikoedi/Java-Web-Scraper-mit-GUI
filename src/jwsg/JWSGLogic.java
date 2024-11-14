@@ -82,13 +82,22 @@ public class JWSGLogic {
 			Document website = null;
 
 			try {
+				if (url == null || url.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Keine URL für " + category + " gefunden!", "Fehler",
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+
 				website = Jsoup.connect(url).get();
-				scrapedData.addAll(processWebsiteData(website, elementClass, container, id, tag, linkSelector));
+				scrapedData
+						.addAll(processWebsiteData(website, category, elementClass, container, id, tag, linkSelector));
 				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Fehler",
-						"URL: " + url + " nicht verfügbar! Versuchen Sie es später erneut.", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+						"Die URL " + url
+								+ " ist nicht verfügbar! Tippfehler? Ansonsten versuchen Sie es später erneut.",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 
 				return;
 			}
@@ -97,8 +106,10 @@ public class JWSGLogic {
 
 	/**
 	 * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
+	 * Bei einem Fehler wird eine entsprechende Fehlermeldung angezeigt.
 	 * 
 	 * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+	 * @param category     Die Kategorie, die das Suchwort repräsentiert.
 	 * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
 	 * @param container    Der Container für die jeweiligen Suchwörter.
 	 * @param id           Die ID für die jeweiligen Suchwörter.
@@ -107,28 +118,76 @@ public class JWSGLogic {
 	 *                     Elemente.
 	 * @return Die Liste, die die extrahierten Daten enthält.
 	 */
-	private List<String> processWebsiteData(Document website, String elementClass, String container, String id,
-			String tag, String linkSelector) {
+	private List<String> processWebsiteData(Document website, String category, String elementClass, String container,
+			String id, String tag, String linkSelector) {
+		if (elementClass == null || elementClass.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Keine Element für " + category + " gefunden!", "Fehler",
+					JOptionPane.ERROR_MESSAGE);
+
+			return new ArrayList<>();
+		}
+
 		Elements websiteElements = website.getElementsByClass(elementClass);
 		Elements containerElements = null;
 		Elements tagElements = null;
 		Element linkElement = null;
 		List<String> scrapedData = new ArrayList<>();
 
-		if (websiteElements.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Keine Daten gefunden! Website-Strukur aktualisiert?", "Fehler",
-					JOptionPane.ERROR_MESSAGE);
+		if (websiteElements == null || websiteElements.isEmpty()) {
+			JOptionPane.showMessageDialog(null,
+					"Keine Daten für " + category + " für das Element " + elementClass
+							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
 
-			return null;
+			return new ArrayList<>();
 		}
 
 		for (Element element : websiteElements) {
 			if (linkSelector == null) {
+				if (container == null || container.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Kein Container für " + category + " gefunden!", "Fehler",
+							JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
+				}
+
 				containerElements = element.getElementsByClass(container);
 
+				if (containerElements == null || containerElements.isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Keine Daten für " + category + " für den Container " + container
+									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+							"Fehler", JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
+				}
+
 				for (Element containerElement : containerElements) {
+					if (id == null || id.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Keine ID für " + category + " gefunden!", "Fehler",
+								JOptionPane.ERROR_MESSAGE);
+
+						return new ArrayList<>();
+					}
+
 					if (containerElement.id().equals(id)) {
+						if (tag == null || tag.isEmpty()) {
+							JOptionPane.showMessageDialog(null, "Kein Tag für " + category + " gefunden!", "Fehler",
+									JOptionPane.ERROR_MESSAGE);
+
+							return new ArrayList<>();
+						}
+
 						tagElements = containerElement.getElementsByTag(tag);
+
+						if (tagElements == null || tagElements.isEmpty()) {
+							JOptionPane.showMessageDialog(null,
+									"Keine Daten für " + category + " für den Tag " + tag
+											+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+									"Fehler", JOptionPane.ERROR_MESSAGE);
+
+							return new ArrayList<>();
+						}
 
 						for (Element tagElement : tagElements) {
 							scrapedData.add(tagElement.text().trim());
@@ -136,10 +195,24 @@ public class JWSGLogic {
 					}
 				}
 			} else {
+				if (linkSelector == null || linkSelector.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Kein Link Selector für " + category + " gefunden!", "Fehler",
+							JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
+				}
+
 				linkElement = element.selectFirst(linkSelector);
 
 				if (linkElement != null) {
 					scrapedData.add(linkElement.ownText().trim());
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Keine Daten für " + category + " für den Link Selector " + linkSelector
+									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+							"Fehler", JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
 				}
 			}
 		}
