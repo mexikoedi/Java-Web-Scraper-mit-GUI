@@ -296,6 +296,17 @@ private void scrapData(List<String> categories)
  * @return Die Liste, die die extrahierten Daten enthält.
  */
 private List<String> processWebsiteData(Document website, String category, String elementClass, String container, String id, String tag, String linkSelector)
+
+/**
+ * Diese Methode wird verwendet, um eine Dialogbox mit dem entsprechenden Titel,
+ * dem passenden Text und dem dazugehörigen Typ asynchron anzuzeigen, um den
+ * Thread nicht zu blockieren.
+ * 
+ * @param message     Der Text, der in der Dialogbox angezeigt werden soll.
+ * @param title       Der Titel der Dialogbox.
+ * @param messageType Der Typ der Dialogbox.
+ */
+private void showDialog(String message, String title, int messageType)
 ```
 </details>
 

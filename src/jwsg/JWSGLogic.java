@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,20 +39,17 @@ public class JWSGLogic {
 	 */
 	public boolean checkButtonPressed(List<String> list) {
 		if (list.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Bitte wählen Sie mindestens ein Suchwort aus!", "Hinweis",
-					JOptionPane.INFORMATION_MESSAGE);
+			showDialog("Bitte wählen Sie mindestens ein Suchwort aus!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
 			return false;
 		}
 
 		if (list.equals(lastSelectedCategories) && list.size() == 1) {
-			JOptionPane.showMessageDialog(null, "Sie haben schon die Daten für dieses Suchwort!", "Hinweis",
-					JOptionPane.INFORMATION_MESSAGE);
+			showDialog("Sie haben schon die Daten für dieses Suchwort!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
 			return false;
 		} else if (list.equals(lastSelectedCategories) && list.size() > 1) {
-			JOptionPane.showMessageDialog(null, "Sie haben schon die Daten für diese Suchwörter!", "Hinweis",
-					JOptionPane.INFORMATION_MESSAGE);
+			showDialog("Sie haben schon die Daten für diese Suchwörter!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
 			return false;
 		}
@@ -83,8 +82,7 @@ public class JWSGLogic {
 
 			try {
 				if (url == null || url.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Keine URL für " + category + " gefunden!", "Fehler",
-							JOptionPane.ERROR_MESSAGE);
+					showDialog("Keine URL für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 					return;
 				}
@@ -94,7 +92,7 @@ public class JWSGLogic {
 						.addAll(processWebsiteData(website, category, elementClass, container, id, tag, linkSelector));
 				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null,
+				showDialog(
 						"Die URL " + url
 								+ " ist nicht verfügbar! Tippfehler? Ansonsten versuchen Sie es später erneut.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -121,8 +119,7 @@ public class JWSGLogic {
 	private List<String> processWebsiteData(Document website, String category, String elementClass, String container,
 			String id, String tag, String linkSelector) {
 		if (elementClass == null || elementClass.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Keine Element für " + category + " gefunden!", "Fehler",
-					JOptionPane.ERROR_MESSAGE);
+			showDialog("Keine Element für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 			return new ArrayList<>();
 		}
@@ -134,7 +131,7 @@ public class JWSGLogic {
 		List<String> scrapedData = new ArrayList<>();
 
 		if (websiteElements == null || websiteElements.isEmpty()) {
-			JOptionPane.showMessageDialog(null,
+			showDialog(
 					"Keine Daten für " + category + " für das Element " + elementClass
 							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -142,11 +139,12 @@ public class JWSGLogic {
 			return new ArrayList<>();
 		}
 
+		boolean idMatched = false;
+
 		for (Element element : websiteElements) {
 			if (linkSelector == null) {
 				if (container == null || container.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Kein Container für " + category + " gefunden!", "Fehler",
-							JOptionPane.ERROR_MESSAGE);
+					showDialog("Kein Container für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 					return new ArrayList<>();
 				}
@@ -154,7 +152,7 @@ public class JWSGLogic {
 				containerElements = element.getElementsByClass(container);
 
 				if (containerElements == null || containerElements.isEmpty()) {
-					JOptionPane.showMessageDialog(null,
+					showDialog(
 							"Keine Daten für " + category + " für den Container " + container
 									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 							"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -164,16 +162,16 @@ public class JWSGLogic {
 
 				for (Element containerElement : containerElements) {
 					if (id == null || id.isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Keine ID für " + category + " gefunden!", "Fehler",
-								JOptionPane.ERROR_MESSAGE);
+						showDialog("Keine ID für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 						return new ArrayList<>();
 					}
 
 					if (containerElement.id().equals(id)) {
+						idMatched = true;
+
 						if (tag == null || tag.isEmpty()) {
-							JOptionPane.showMessageDialog(null, "Kein Tag für " + category + " gefunden!", "Fehler",
-									JOptionPane.ERROR_MESSAGE);
+							showDialog("Kein Tag für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 							return new ArrayList<>();
 						}
@@ -181,7 +179,7 @@ public class JWSGLogic {
 						tagElements = containerElement.getElementsByTag(tag);
 
 						if (tagElements == null || tagElements.isEmpty()) {
-							JOptionPane.showMessageDialog(null,
+							showDialog(
 									"Keine Daten für " + category + " für den Tag " + tag
 											+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 									"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -196,7 +194,7 @@ public class JWSGLogic {
 				}
 			} else {
 				if (linkSelector == null || linkSelector.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Kein Link Selector für " + category + " gefunden!", "Fehler",
+					showDialog("Kein Link Selector für " + category + " gefunden!", "Fehler",
 							JOptionPane.ERROR_MESSAGE);
 
 					return new ArrayList<>();
@@ -207,7 +205,7 @@ public class JWSGLogic {
 				if (linkElement != null) {
 					scrapedData.add(linkElement.ownText().trim());
 				} else {
-					JOptionPane.showMessageDialog(null,
+					showDialog(
 							"Keine Daten für " + category + " für den Link Selector " + linkSelector
 									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 							"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -217,6 +215,28 @@ public class JWSGLogic {
 			}
 		}
 
+		if (!idMatched && linkSelector == null) {
+			showDialog(
+					"Keine Daten für " + category + " für die ID " + id
+							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
+
+			return new ArrayList<>();
+		}
+
 		return scrapedData;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um eine Dialogbox mit dem entsprechenden Titel,
+	 * dem passenden Text und dem dazugehörigen Typ asynchron anzuzeigen, um den
+	 * Thread nicht zu blockieren.
+	 * 
+	 * @param message     Der Text, der in der Dialogbox angezeigt werden soll.
+	 * @param title       Der Titel der Dialogbox.
+	 * @param messageType Der Typ der Dialogbox.
+	 */
+	private void showDialog(String message, String title, int messageType) {
+		SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, title, messageType));
 	}
 }
