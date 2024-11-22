@@ -77,8 +77,6 @@ public class JWSGLayout {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Unerwarteter Startfehler! Bitte erneut versuchen.", "Fehler",
 							JOptionPane.ERROR_MESSAGE);
-
-					System.exit(1);
 				}
 			}
 		});
@@ -155,7 +153,6 @@ public class JWSGLayout {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Unerwarteter Fehler der UI-Anpassung! Bitte erneut versuchen.",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
-
 			System.exit(1);
 		}
 
