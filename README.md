@@ -143,6 +143,15 @@ Datei: JWSGScrapingConfig.java
 
 ```java
 /**
+ * Diese Methode wird verwendet, um den Typ für das angegebene Suchwort aus
+ * einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Typ abgerufen werden soll.
+ * @return Der Typ für das angegebene Suchwort.
+ */
+public static String getType(String keyword)
+
+/**
  * Diese Methode wird verwendet, um die URL für das angegebene Suchwort aus
  * einer Map abzurufen.
  * 
@@ -197,6 +206,41 @@ public static String getTag(String keyword)
 public static String getSelector(String keyword)
 
 /**
+ * Diese Methode wird verwendet, um den Personennamen Selektor für spezifische
+ * Links für das angegebene Suchwort aus einer Map abzurufen.
+ *
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getPersonNameSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Personengruppen Selektor für spezifische
+ * Links für das angegebene Suchwort aus einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getPersonGroupSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Personenemail Selektor für spezifische
+ * Links für das angegebene Suchwort aus einer Map abzurufen.
+ * 
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getPersonEmailSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Typen zu
+ * erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Typen.
+ */
+public static Map<String, String> getKeywordTypeMap()
+
+/**
  * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und URLs zu
  * erhalten.
  * 
@@ -243,6 +287,78 @@ public static Map<String, String> getKeywordTagMap()
  * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links.
  */
 public static Map<String, String> getKeywordSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Personennamen zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Personennamen.
+ */
+public static Map<String, String> getPersonNameSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Personengruppen zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Personengruppen.
+ */
+public static Map<String, String> getPersonGroupSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Personenemail zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Personenemail.
+ */
+public static Map<String, String> getPersonEmailSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die Elementklasse für Studiengänge zu
+ * erhalten.
+ * 
+ * @return Die Elementklasse für Studiengänge.
+ */
+public static String getProgramElementClass()
+
+/**
+ * Diese Methode wird verwendet, um die Elementklasse für Termine zu erhalten.
+ * 
+ * @return Die Elementklasse für Termine.
+ */
+public static String getDateElementClass()
+
+/**
+ * Diese Methode wird verwendet, um den Container für Termine zu erhalten.
+ * 
+ * @return Der Container für Termine.
+ */
+public static String getPersonElementClass()
+
+/**
+ * Diese Methode wird verwendet, um den Typ für Personen zu erhalten.
+ * 
+ * @return Der Typ für Personen.
+ */
+public static String getPersonType()
+
+/**
+ * Diese Methode wird verwendet, um den Pagination Token für Personen zu
+ * erhalten.
+ * 
+ * @return Der Pagination Token für Personen.
+ */
+public static String getPersonPaginationToken()
+
+/**
+ * Diese Methode wird verwendet, um das Format für die Pagination für Personen
+ * zu erhalten.
+ * 
+ * @return Das Format für die Pagination für Personen.
+ */
+public static String getPersonPaginationFormat()
 ```
 </details>
 
@@ -282,20 +398,47 @@ Datei: JWSGLogic.java
 private void scrapData(List<String> categories)
 
 /**
- * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
- * Bei einem Fehler wird eine entsprechende Fehlermeldung angezeigt.
+ * Diese Methode wird verwendet, um die Daten der Studiengänge zu extrahieren
+ * und zu verarbeiten.
  * 
  * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
- * @param category     Die Kategorie, die das Suchwort repräsentiert.
+ * @param category     Die Kategorie des Suchworts (Studiengänge).
  * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
- * @param container    Der Container für die jeweiligen Suchwörter.
- * @param id           Die ID für die jeweiligen Suchwörter.
- * @param tag          Der Tag für die jeweiligen Suchwörter.
  * @param linkSelector Der Selektor für spezifische Links innerhalb der
  *                     Elemente.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processWebsiteData(Document website, String category, String elementClass, String container, String id, String tag, String linkSelector)
+private List<String> processProgramData(Document website, String category, String elementClass, String linkSelector)
+
+/**
+ * Diese Methode wird verwendet, um die Daten der Semestertermine zu extrahieren
+ * und zu verarbeiten.
+ * 
+ * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+ * @param category     Die Kategorie des Suchworts (Semestertermine).
+ * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+ * @param container    Der Container für die jeweiligen Suchwörter.
+ * @param id           Die ID für die jeweiligen Suchwörter.
+ * @param tag          Der Tag für die jeweiligen Suchwörter
+ * @return Die Liste, die die extrahierten Daten enthält.
+ */
+private List<String> processDateData(Document website, String category, String elementClass, String container, String id, String tag)
+
+/**
+ * Diese Methode wird verwendet, um die Daten der Personen zu extrahieren und zu
+ * verarbeiten.
+ * 
+ * @param website       Die Webseite, von der die Daten extrahiert werden
+ *                      sollen.
+ * @param category      Die Kategorie des Suchworts (Personen).
+ * @param elementClass  Die Klasse der Elemente, die die Daten enthalten.
+ * @param tag           Der Tag für die jeweiligen Suchwörter
+ * @param nameSelector  Der Selektor für die Namen der Personen.
+ * @param groupSelector Der Selektor für die Gruppen der Personen.
+ * @param emailSelector Der Selektor für die E-Mail-Adressen der Personen.
+ * @return Die Liste, die die extrahierten Daten enthält.
+ */
+private List<String> processPersonData(Document website, String category, String elementClass, String tag, String nameSelector, String groupSelector, String emailSelector)
 
 /**
  * Diese Methode wird verwendet, um eine Dialogbox mit dem entsprechenden Titel,

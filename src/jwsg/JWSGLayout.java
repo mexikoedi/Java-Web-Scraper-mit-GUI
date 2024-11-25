@@ -1,5 +1,6 @@
 package jwsg;
 
+// Importe
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
@@ -31,39 +32,9 @@ import javax.swing.JButton;
 public class JWSGLayout {
 	// GUI/Layout Elemente
 	private JFrame frmJavaWebScraper;
-	private Image icon;
 	private JPanel panel;
-	private GridBagLayout gridBagLayout;
-	private JTextArea textAreaAppExplanation;
-	private GridBagConstraints gbc_textAreaAppExplanation;
-	private JSeparator separatorTop;
-	private GridBagConstraints gbc_separatorTop;
-	private JTextArea textAreaData;
-	private GridBagConstraints gbc_textAreaData;
-	private JButton btnDropdown;
-	private GridBagConstraints gbc_btnDropdown;
-	private JList<String> listData;
-	private JPopupMenu popupMenu;
-	private JScrollPane popupScrollPane;
-	private JButton btnData;
-	private GridBagConstraints gbc_btnData;
-	private JSeparator separatorBottom;
-	private GridBagConstraints gbc_separatorBottom;
-	private JLabel lblData;
-	private GridBagConstraints gbc_lblData;
-	private JTextArea txtAreaDataSearchExplanation;
-	private GridBagConstraints gbc_textAreaDataSearchExplanation;
-	private JTextField textFieldDataSearch;
-	private GridBagConstraints gbc_textFieldDataSearch;
-	private JButton btnDataSearch;
-	private GridBagConstraints gbc_btnDataSearch;
-	private JScrollPane scrollPane;
 	private JTextArea dataTextArea;
 	private JScrollPane dataScrollPane;
-	private GridBagConstraints gbc_dataTextArea;
-	// Date
-	private LocalDate currentDate = LocalDate.now();
-	private int currentYear = currentDate.getYear();
 
 	/**
 	 * Start der Anwendung. Erzeugt das Fenster und ansonsten erscheint ein Fehler.
@@ -102,14 +73,40 @@ public class JWSGLayout {
 		// Durch alle Kategorien durchgehen, formatieren und Daten hinzufügen
 		for (String category : selectedCategories) {
 			List<String> details = scrapedData.get(category);
+			String type = JWSGScrapingConfig.getType(category);
+			String personType = JWSGScrapingConfig.getPersonType();
+			String name = null;
+			String group = null;
+			String email = null;
 
 			if (details != null && !details.isEmpty()) {
 				dataBuilder.append("=".repeat(category.length() + 2)).append("\n").append(category.toUpperCase())
 						.append("\n").append("=".repeat(category.length() + 2)).append("\n");
 
-				for (String detail : details) {
-					if (!detail.isEmpty()) {
-						dataBuilder.append(detail).append("\n");
+				if (personType.equals(type)) {
+					// Gruppierung und Formatierung für Personen
+					for (int i = 0; i < details.size(); i += 3) {
+						name = i < details.size() ? details.get(i) : "";
+						group = (i + 1) < details.size() ? details.get(i + 1) : "";
+						email = (i + 2) < details.size() ? details.get(i + 2) : "";
+						dataBuilder.append(name);
+
+						if (!group.isEmpty()) {
+							dataBuilder.append(" | ").append(group);
+						}
+
+						if (!email.isEmpty()) {
+							dataBuilder.append(" | ").append(email);
+						}
+
+						dataBuilder.append("\n");
+					}
+				} else {
+					// Standarddarstellung für andere Kategorien
+					for (String detail : details) {
+						if (!detail.isEmpty()) {
+							dataBuilder.append(detail).append("\n");
+						}
 					}
 				}
 
@@ -127,7 +124,7 @@ public class JWSGLayout {
 		dataTextArea.setEnabled(false);
 		dataTextArea.setText(dataBuilder.toString().trim());
 		dataScrollPane = new JScrollPane(dataTextArea);
-		gbc_dataTextArea = new GridBagConstraints();
+		GridBagConstraints gbc_dataTextArea = new GridBagConstraints();
 		gbc_dataTextArea.fill = GridBagConstraints.BOTH;
 		gbc_dataTextArea.gridwidth = 4;
 		gbc_dataTextArea.insets = new Insets(0, 5, 5, 5);
@@ -165,22 +162,25 @@ public class JWSGLayout {
 		frmJavaWebScraper.setMinimumSize(new Dimension(1025, 500));
 		frmJavaWebScraper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Icon setzen
-		icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("Icon.png"));
+		Image icon = Toolkit.getDefaultToolkit().getImage(this.getClass().getClassLoader().getResource("Icon.png"));
 		this.frmJavaWebScraper.setIconImage(icon);
 		// Panel erzeugen und anpassen
 		panel = new JPanel();
 		panel.setFont(new Font("Calibri", Font.PLAIN, 14));
 		panel.setPreferredSize(new Dimension(640, 360));
 		// GridBagLayout verwenden, Spalten/Zeilen definieren und zum Panel hinzufügen
-		gridBagLayout = new GridBagLayout();
+		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 400, 0, 0, 100 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0 };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 		panel.setLayout(gridBagLayout);
+		// Datum für das aktuelle Jahr ermitteln
+		LocalDate currentDate = LocalDate.now();
+		int currentYear = currentDate.getYear();
 		// JTextArea textAreaAppExplanation für GridBagLayout anpassen und zum Panel
 		// hinzufügen
-		textAreaAppExplanation = new JTextArea();
+		JTextArea textAreaAppExplanation = new JTextArea();
 		textAreaAppExplanation.setBackground(new Color(240, 240, 240));
 		textAreaAppExplanation.setBorder(null);
 		textAreaAppExplanation.setFont(new Font("Calibri", Font.BOLD, 14));
@@ -191,7 +191,7 @@ public class JWSGLayout {
 				"Dieses Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen. Nutzen Sie die Dropdown-Liste, um nach einer oder mehreren Informationen zu suchen."
 						+ "\n© 2024-" + currentYear + " mexikoedi");
 		textAreaAppExplanation.setEditable(false);
-		gbc_textAreaAppExplanation = new GridBagConstraints();
+		GridBagConstraints gbc_textAreaAppExplanation = new GridBagConstraints();
 		gbc_textAreaAppExplanation.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textAreaAppExplanation.gridwidth = 4;
 		gbc_textAreaAppExplanation.insets = new Insets(5, 5, 0, 0);
@@ -199,8 +199,8 @@ public class JWSGLayout {
 		gbc_textAreaAppExplanation.gridy = 0;
 		panel.add(textAreaAppExplanation, gbc_textAreaAppExplanation);
 		// JSeparator separatorTop für GridBagLayout anpassen und zum Panel hinzufügen
-		separatorTop = new JSeparator();
-		gbc_separatorTop = new GridBagConstraints();
+		JSeparator separatorTop = new JSeparator();
+		GridBagConstraints gbc_separatorTop = new GridBagConstraints();
 		gbc_separatorTop.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separatorTop.gridwidth = 4;
 		gbc_separatorTop.insets = new Insets(25, 0, 25, 0);
@@ -208,7 +208,7 @@ public class JWSGLayout {
 		gbc_separatorTop.gridy = 1;
 		panel.add(separatorTop, gbc_separatorTop);
 		// JTextArea textAreaData für GridBagLayout anpassen und zum Panel hinzufügen
-		textAreaData = new JTextArea();
+		JTextArea textAreaData = new JTextArea();
 		textAreaData.setWrapStyleWord(true);
 		textAreaData.setText("Suchwort aus dem Dropdown auswählen (Mehrfachauswahl):");
 		textAreaData.setLineWrap(true);
@@ -217,7 +217,7 @@ public class JWSGLayout {
 		textAreaData.setEditable(false);
 		textAreaData.setBorder(null);
 		textAreaData.setBackground(UIManager.getColor("Button.background"));
-		gbc_textAreaData = new GridBagConstraints();
+		GridBagConstraints gbc_textAreaData = new GridBagConstraints();
 		gbc_textAreaData.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textAreaData.insets = new Insets(0, 5, 5, 5);
 		gbc_textAreaData.gridx = 0;
@@ -225,9 +225,9 @@ public class JWSGLayout {
 		gbc_textAreaData.gridwidth = 1;
 		panel.add(textAreaData, gbc_textAreaData);
 		// JButton btnDropdown für GridBagLayout anpassen und zum Panel hinzufügen
-		btnDropdown = new JButton("Suchwörter auswählen");
+		JButton btnDropdown = new JButton("Suchwörter auswählen");
 		btnDropdown.setFont(new Font("Calibri", Font.PLAIN, 14));
-		gbc_btnDropdown = new GridBagConstraints();
+		GridBagConstraints gbc_btnDropdown = new GridBagConstraints();
 		gbc_btnDropdown.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnDropdown.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDropdown.gridx = 1;
@@ -235,20 +235,20 @@ public class JWSGLayout {
 		gbc_btnDropdown.gridwidth = 2;
 		panel.add(btnDropdown, gbc_btnDropdown);
 		// JList<String> listData befüllen und anpassen
-		listData = new JList<>(this.initList());
+		JList<String> listData = new JList<>(this.initList());
 		listData.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		listData.setVisibleRowCount(5);
 		listData.setFont(new Font("Calibri", Font.PLAIN, 14));
 		// JPopupMenu popupMenu anpassen und Scrollleiste hinzufügen
-		popupScrollPane = new JScrollPane(listData);
-		popupMenu = new JPopupMenu();
+		JScrollPane popupScrollPane = new JScrollPane(listData);
+		JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.add(popupScrollPane);
 		// ActionListener für JButton btnDropdown hinzufügen und JScrollPane
 		// popupScrollPane anpassen
 		btnDropdown.addActionListener(e -> {
 			int buttonWidth = btnDropdown.getWidth() - 5;
 			int rowHeight = listData.getCellBounds(0, 0).height;
-			int visibleRowCount = listData.getModel().getSize();
+			int visibleRowCount = Math.min(listData.getModel().getSize(), 10);
 			int popupHeight = visibleRowCount * rowHeight;
 			popupScrollPane.setPreferredSize(new Dimension(buttonWidth, popupHeight));
 			popupMenu.show(btnDropdown, 0, btnDropdown.getHeight());
@@ -263,7 +263,7 @@ public class JWSGLayout {
 		});
 		// JButton btnData für GridBagLayout anpassen, ActionListener einführen und zum
 		// Panel hinzufügen
-		btnData = new JButton("Abrufen");
+		JButton btnData = new JButton("Abrufen");
 		btnData.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnData.addActionListener(e -> {
 			boolean scraped = logic.checkButtonPressed(listData.getSelectedValuesList());
@@ -276,15 +276,15 @@ public class JWSGLayout {
 				initData(listData.getSelectedValuesList(), logic.getScrapedDataMap());
 			}
 		});
-		gbc_btnData = new GridBagConstraints();
+		GridBagConstraints gbc_btnData = new GridBagConstraints();
 		gbc_btnData.gridx = 3;
 		gbc_btnData.gridy = 2;
 		gbc_btnData.insets = new Insets(0, 0, 5, 0);
 		panel.add(btnData, gbc_btnData);
 		// JSeparator separatorBottom für GridBagLayout anpassen und zum Panel
 		// hinzufügen
-		separatorBottom = new JSeparator();
-		gbc_separatorBottom = new GridBagConstraints();
+		JSeparator separatorBottom = new JSeparator();
+		GridBagConstraints gbc_separatorBottom = new GridBagConstraints();
 		gbc_separatorBottom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separatorBottom.gridwidth = 4;
 		gbc_separatorBottom.insets = new Insets(25, 0, 25, 0);
@@ -292,10 +292,10 @@ public class JWSGLayout {
 		gbc_separatorBottom.gridy = 3;
 		panel.add(separatorBottom, gbc_separatorBottom);
 		// JLabel lblData für GridBagLayout anpassen und zum Panel hinzufügen
-		lblData = new JLabel("Daten");
+		JLabel lblData = new JLabel("Daten");
 		lblData.setHorizontalAlignment(SwingConstants.CENTER);
 		lblData.setFont(new Font("Calibri", Font.BOLD, 14));
-		gbc_lblData = new GridBagConstraints();
+		GridBagConstraints gbc_lblData = new GridBagConstraints();
 		gbc_lblData.gridwidth = 4;
 		gbc_lblData.insets = new Insets(0, 0, 5, 0);
 		gbc_lblData.gridx = 0;
@@ -303,7 +303,7 @@ public class JWSGLayout {
 		panel.add(lblData, gbc_lblData);
 		// JTextArea txtAreaDataSearchExplanation für GridBagLayout anpassen und zum
 		// Panel hinzufügen
-		txtAreaDataSearchExplanation = new JTextArea();
+		JTextArea txtAreaDataSearchExplanation = new JTextArea();
 		txtAreaDataSearchExplanation.setWrapStyleWord(true);
 		txtAreaDataSearchExplanation.setText("Geben Sie ein Schlagwort ein, um die Daten zu durchsuchen:");
 		txtAreaDataSearchExplanation.setLineWrap(true);
@@ -312,7 +312,7 @@ public class JWSGLayout {
 		txtAreaDataSearchExplanation.setEditable(false);
 		txtAreaDataSearchExplanation.setBorder(null);
 		txtAreaDataSearchExplanation.setBackground(UIManager.getColor("Button.background"));
-		gbc_textAreaDataSearchExplanation = new GridBagConstraints();
+		GridBagConstraints gbc_textAreaDataSearchExplanation = new GridBagConstraints();
 		gbc_textAreaDataSearchExplanation.anchor = GridBagConstraints.NORTH;
 		gbc_textAreaDataSearchExplanation.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textAreaDataSearchExplanation.insets = new Insets(0, 5, 5, 5);
@@ -322,10 +322,10 @@ public class JWSGLayout {
 		panel.add(txtAreaDataSearchExplanation, gbc_textAreaDataSearchExplanation);
 		// JTextField textFieldDataSearch für GridBagLayout anpassen und zum Panel
 		// hinzufügen
-		textFieldDataSearch = new JTextField();
+		JTextField textFieldDataSearch = new JTextField();
 		textFieldDataSearch.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldDataSearch.setFont(new Font("Calibri", Font.PLAIN, 15));
-		gbc_textFieldDataSearch = new GridBagConstraints();
+		GridBagConstraints gbc_textFieldDataSearch = new GridBagConstraints();
 		gbc_textFieldDataSearch.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldDataSearch.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldDataSearch.insets = new Insets(0, 0, 5, 5);
@@ -335,15 +335,15 @@ public class JWSGLayout {
 		panel.add(textFieldDataSearch, gbc_textFieldDataSearch);
 		textFieldDataSearch.setColumns(10);
 		// JButton btnDataSearch für GridBagLayout anpassen und zum Panel hinzufügen
-		btnDataSearch = new JButton("Suchen");
+		JButton btnDataSearch = new JButton("Suchen");
 		btnDataSearch.setFont(new Font("Calibri", Font.PLAIN, 14));
-		gbc_btnDataSearch = new GridBagConstraints();
+		GridBagConstraints gbc_btnDataSearch = new GridBagConstraints();
 		gbc_btnDataSearch.anchor = GridBagConstraints.NORTH;
 		gbc_btnDataSearch.gridx = 3;
 		gbc_btnDataSearch.gridy = 6;
 		panel.add(btnDataSearch, gbc_btnDataSearch);
 		// JScrollPane scrollPane zum Frame hinzufügen
-		scrollPane = new JScrollPane(panel);
+		JScrollPane scrollPane = new JScrollPane(panel);
 		scrollPane.setFont(new Font("Calibri", Font.PLAIN, 14));
 		frmJavaWebScraper.getContentPane().add(scrollPane);
 	}

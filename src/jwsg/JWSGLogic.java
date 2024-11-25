@@ -1,13 +1,14 @@
 package jwsg;
 
+// Importe
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +16,6 @@ import org.jsoup.select.Elements;
 
 public class JWSGLogic {
 	// Datenstrukturen
-	private List<String> lastSelectedCategories = new ArrayList<>();
 	private static final Map<String, List<String>> scrapedDataMap = new ConcurrentHashMap<>();
 
 	/**
@@ -38,6 +38,8 @@ public class JWSGLogic {
 	 *         aufgetreten ist, sonst false.
 	 */
 	public boolean checkButtonPressed(List<String> list) {
+		List<String> lastSelectedCategories = new ArrayList<>();
+
 		if (list.isEmpty()) {
 			showDialog("Bitte wählen Sie mindestens ein Suchwort aus!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
@@ -70,32 +72,116 @@ public class JWSGLogic {
 		// Map leeren
 		scrapedDataMap.clear();
 
+		// Maximale Anzahl von Anfragen vor der Pause
+		final int batchSize = 25;
+		// Randomverzögerung zwischen 5 und 8 Sekunden für die Pause
+		final int delayMillis = (int) Math.floor(Math.random() * (8000 - 5000 + 1) + 5000);
+		/*
+		 * AtomicInteger wird verwendet, um Anfragen sicher über mehrere Threads zu
+		 * zählen. Dies stellt sicher, dass jeder Thread den Zähler ohne
+		 * Wettlaufbedingungen erhöht.
+		 */
+		AtomicInteger requestCounter = new AtomicInteger(0);
+
 		categories.parallelStream().forEach(category -> {
-			String url = JWSGScrapingConfig.getUrl(category);
+			/*
+			 * Synchronieren der Verzögerung, um zu vermeiden, dass mehrere Threads
+			 * gleichzeitig pausieren
+			 */
+			synchronized (requestCounter) {
+				// Pause, wenn der Anforderungszähler die Batchgröße erreicht
+				if (requestCounter.incrementAndGet() % batchSize == 0) {
+					try {
+						Thread.sleep(delayMillis);
+					} catch (InterruptedException e) {
+						// Wiederherstellen des unterbrochenen Status
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+
+			String baseUrl = JWSGScrapingConfig.getUrl(category);
 			String elementClass = JWSGScrapingConfig.getElementClass(category);
 			String container = JWSGScrapingConfig.getContainer(category);
 			String id = JWSGScrapingConfig.getId(category);
 			String tag = JWSGScrapingConfig.getTag(category);
 			String linkSelector = JWSGScrapingConfig.getSelector(category);
-			List<String> scrapedData = new ArrayList<>();
+			String nameSelector = JWSGScrapingConfig.getPersonNameSelector(category);
+			String groupSelector = JWSGScrapingConfig.getPersonGroupSelector(category);
+			String emailSelector = JWSGScrapingConfig.getPersonEmailSelector(category);
+			String programElementClass = JWSGScrapingConfig.getProgramElementClass();
+			String dateElementClass = JWSGScrapingConfig.getDateElementClass();
+			String personElementClass = JWSGScrapingConfig.getPersonElementClass();
+			String personPaginationToken = JWSGScrapingConfig.getPersonPaginationToken();
+			String personPaginationFormat = JWSGScrapingConfig.getPersonPaginationFormat();
+			String url = null;
 			Document website = null;
+			Elements websiteElements = null;
+			List<String> pageData;
+			List<String> allScrapedData = new ArrayList<>();
+			List<String> scrapedData = new ArrayList<>();
 
 			try {
-				if (url == null || url.isEmpty()) {
-					showDialog("Keine URL für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+				if (elementClass.equals(personElementClass)) {
+					int currentPage = 1;
 
-					return;
+					while (true) {
+						url = (currentPage == 1) ? baseUrl
+								: baseUrl.replace(personPaginationToken,
+										String.format(personPaginationFormat, currentPage));
+
+						try {
+							website = Jsoup.connect(url).get();
+						} catch (IOException e) {
+							showDialog(
+									"Die URL " + url
+											+ " ist nicht verfügbar! Tippfehler? Versuchen Sie es später erneut.",
+									"Fehler", JOptionPane.ERROR_MESSAGE);
+
+							break;
+						}
+
+						websiteElements = website.getElementsByClass(elementClass);
+
+						if (websiteElements == null || websiteElements.isEmpty()) {
+							break;
+						}
+
+						pageData = processPersonData(website, category, elementClass, tag, nameSelector, groupSelector,
+								emailSelector);
+
+						if (pageData.isEmpty()) {
+							break;
+						}
+
+						allScrapedData.addAll(pageData);
+						currentPage++;
+					}
+
+					scrapedDataMap.put(category, allScrapedData);
+				} else {
+					website = Jsoup.connect(baseUrl).get();
+
+					if (elementClass.equals(programElementClass)) {
+						scrapedData = processProgramData(website, category, elementClass, linkSelector);
+					} else if (elementClass.equals(dateElementClass)) {
+						scrapedData = processDateData(website, category, elementClass, container, id, tag);
+					} else {
+						if (websiteElements == null || websiteElements.isEmpty()) {
+							showDialog(
+									"Keine Daten für " + category + " für das Element " + elementClass
+											+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+									"Fehler", JOptionPane.ERROR_MESSAGE);
+
+							return;
+						}
+					}
+
+					scrapedDataMap.put(category, scrapedData);
 				}
-
-				website = Jsoup.connect(url).get();
-				scrapedData
-						.addAll(processWebsiteData(website, category, elementClass, container, id, tag, linkSelector));
-				scrapedDataMap.put(category, scrapedData);
 			} catch (IOException e) {
-				showDialog(
-						"Die URL " + url
-								+ " ist nicht verfügbar! Tippfehler? Ansonsten versuchen Sie es später erneut.",
-						"Fehler", JOptionPane.ERROR_MESSAGE);
+				showDialog("Fehler beim Abrufen der Daten für " + category
+						+ "! Tippfehler? Versuchen Sie es später erneut.", "Fehler", JOptionPane.ERROR_MESSAGE);
 
 				return;
 			}
@@ -103,121 +189,265 @@ public class JWSGLogic {
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um die Daten zu extrahieren und zu verarbeiten.
-	 * Bei einem Fehler wird eine entsprechende Fehlermeldung angezeigt.
+	 * Diese Methode wird verwendet, um die Daten der Studiengänge zu extrahieren
+	 * und zu verarbeiten.
 	 * 
 	 * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
-	 * @param category     Die Kategorie, die das Suchwort repräsentiert.
+	 * @param category     Die Kategorie des Suchworts (Studiengänge).
 	 * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
-	 * @param container    Der Container für die jeweiligen Suchwörter.
-	 * @param id           Die ID für die jeweiligen Suchwörter.
-	 * @param tag          Der Tag für die jeweiligen Suchwörter.
 	 * @param linkSelector Der Selektor für spezifische Links innerhalb der
 	 *                     Elemente.
 	 * @return Die Liste, die die extrahierten Daten enthält.
 	 */
-	private List<String> processWebsiteData(Document website, String category, String elementClass, String container,
-			String id, String tag, String linkSelector) {
-		if (elementClass == null || elementClass.isEmpty()) {
-			showDialog("Keine Element für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
-
-			return new ArrayList<>();
-		}
-
+	private List<String> processProgramData(Document website, String category, String elementClass,
+			String linkSelector) {
 		Elements websiteElements = website.getElementsByClass(elementClass);
-		Elements containerElements = null;
-		Elements tagElements = null;
 		Element linkElement = null;
 		List<String> scrapedData = new ArrayList<>();
 
-		if (websiteElements == null || websiteElements.isEmpty()) {
+		for (Element element : websiteElements) {
+			if (linkSelector == null || linkSelector.isEmpty()) {
+				showDialog("Kein Link Selector für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+
+				return new ArrayList<>();
+			}
+
+			linkElement = element.selectFirst(linkSelector);
+
+			if (linkElement != null) {
+				scrapedData.add(linkElement.ownText().trim());
+			} else {
+				showDialog(
+						"Keine Daten für " + category + " für den Link Selector " + linkSelector
+								+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+
+				return new ArrayList<>();
+			}
+		}
+
+		return scrapedData;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die Daten der Semestertermine zu extrahieren
+	 * und zu verarbeiten.
+	 * 
+	 * @param website      Die Webseite, von der die Daten extrahiert werden sollen.
+	 * @param category     Die Kategorie des Suchworts (Semestertermine).
+	 * @param elementClass Die Klasse der Elemente, die die Daten enthalten.
+	 * @param container    Der Container für die jeweiligen Suchwörter.
+	 * @param id           Die ID für die jeweiligen Suchwörter.
+	 * @param tag          Der Tag für die jeweiligen Suchwörter
+	 * @return Die Liste, die die extrahierten Daten enthält.
+	 */
+	private List<String> processDateData(Document website, String category, String elementClass, String container,
+			String id, String tag) {
+		Elements websiteElements = website.getElementsByClass(elementClass);
+		Elements containerElements = null;
+		Elements tagElements = null;
+		List<String> scrapedData = new ArrayList<>();
+		boolean idMatched = false;
+
+		for (Element element : websiteElements) {
+			if (container == null || container.isEmpty()) {
+				showDialog("Kein Container für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+
+				return new ArrayList<>();
+			}
+
+			containerElements = element.getElementsByClass(container);
+
+			if (containerElements == null || containerElements.isEmpty()) {
+				showDialog(
+						"Keine Daten für " + category + " für den Container " + container
+								+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
+
+				return new ArrayList<>();
+			}
+
+			for (Element containerElement : containerElements) {
+				if (id == null || id.isEmpty()) {
+					showDialog("Keine ID für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
+				}
+
+				if (containerElement.id().equals(id)) {
+					idMatched = true;
+
+					if (tag == null || tag.isEmpty()) {
+						showDialog("Kein Tag für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+
+						return new ArrayList<>();
+					}
+
+					tagElements = containerElement.getElementsByTag(tag);
+
+					if (tagElements == null || tagElements.isEmpty()) {
+						showDialog(
+								"Keine Daten für " + category + " für den Tag " + tag
+										+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+								"Fehler", JOptionPane.ERROR_MESSAGE);
+
+						return new ArrayList<>();
+					}
+
+					for (Element tagElement : tagElements) {
+						scrapedData.add(tagElement.text().trim());
+					}
+				}
+			}
+		}
+
+		if (!idMatched) {
 			showDialog(
-					"Keine Daten für " + category + " für das Element " + elementClass
+					"Keine Daten für " + category + " für die ID " + id
 							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 
 			return new ArrayList<>();
 		}
 
-		boolean idMatched = false;
+		return scrapedData;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die Daten der Personen zu extrahieren und zu
+	 * verarbeiten.
+	 * 
+	 * @param website       Die Webseite, von der die Daten extrahiert werden
+	 *                      sollen.
+	 * @param category      Die Kategorie des Suchworts (Personen).
+	 * @param elementClass  Die Klasse der Elemente, die die Daten enthalten.
+	 * @param tag           Der Tag für die jeweiligen Suchwörter
+	 * @param nameSelector  Der Selektor für die Namen der Personen.
+	 * @param groupSelector Der Selektor für die Gruppen der Personen.
+	 * @param emailSelector Der Selektor für die E-Mail-Adressen der Personen.
+	 * @return Die Liste, die die extrahierten Daten enthält.
+	 */
+	private List<String> processPersonData(Document website, String category, String elementClass, String tag,
+			String nameSelector, String groupSelector, String emailSelector) {
+		Elements websiteElements = website.getElementsByClass(elementClass);
+		Elements tagElements = null;
+		Element nameElement = null;
+		Element groupElement = null;
+		Element emailElement = null;
+		List<String> scrapedData = new ArrayList<>();
+		String email = null;
+		boolean foundValidName = false;
+		boolean foundValidGroup = false;
+		boolean foundValidEmail = false;
 
 		for (Element element : websiteElements) {
-			if (linkSelector == null) {
-				if (container == null || container.isEmpty()) {
-					showDialog("Kein Container für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+			if (tag == null || tag.isEmpty()) {
+				showDialog("Kein Tag für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 
-					return new ArrayList<>();
-				}
+				return new ArrayList<>();
+			}
 
-				containerElements = element.getElementsByClass(container);
+			tagElements = element.getElementsByTag(tag);
 
-				if (containerElements == null || containerElements.isEmpty()) {
-					showDialog(
-							"Keine Daten für " + category + " für den Container " + container
-									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
-							"Fehler", JOptionPane.ERROR_MESSAGE);
+			if (tagElements == null || tagElements.isEmpty()) {
+				showDialog(
+						"Keine Daten für " + category + " für den Tag " + tag
+								+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+						"Fehler", JOptionPane.ERROR_MESSAGE);
 
-					return new ArrayList<>();
-				}
+				return new ArrayList<>();
+			}
 
-				for (Element containerElement : containerElements) {
-					if (id == null || id.isEmpty()) {
-						showDialog("Keine ID für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
-
-						return new ArrayList<>();
-					}
-
-					if (containerElement.id().equals(id)) {
-						idMatched = true;
-
-						if (tag == null || tag.isEmpty()) {
-							showDialog("Kein Tag für " + category + " gefunden!", "Fehler", JOptionPane.ERROR_MESSAGE);
-
-							return new ArrayList<>();
-						}
-
-						tagElements = containerElement.getElementsByTag(tag);
-
-						if (tagElements == null || tagElements.isEmpty()) {
-							showDialog(
-									"Keine Daten für " + category + " für den Tag " + tag
-											+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
-									"Fehler", JOptionPane.ERROR_MESSAGE);
-
-							return new ArrayList<>();
-						}
-
-						for (Element tagElement : tagElements) {
-							scrapedData.add(tagElement.text().trim());
-						}
-					}
-				}
-			} else {
-				if (linkSelector == null || linkSelector.isEmpty()) {
-					showDialog("Kein Link Selector für " + category + " gefunden!", "Fehler",
+			for (Element tagElement : tagElements) {
+				if (nameSelector == null || nameSelector.isEmpty()) {
+					showDialog("Kein Name Selector für " + category + " gefunden!", "Fehler",
 							JOptionPane.ERROR_MESSAGE);
 
 					return new ArrayList<>();
 				}
 
-				linkElement = element.selectFirst(linkSelector);
+				nameElement = tagElement.selectFirst(nameSelector);
 
-				if (linkElement != null) {
-					scrapedData.add(linkElement.ownText().trim());
-				} else {
-					showDialog(
-							"Keine Daten für " + category + " für den Link Selector " + linkSelector
-									+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
-							"Fehler", JOptionPane.ERROR_MESSAGE);
+				if (nameElement != null) {
+					foundValidName = true;
+				}
+
+				if (groupSelector == null || groupSelector.isEmpty()) {
+					showDialog("Kein Group Selector für " + category + " gefunden!", "Fehler",
+							JOptionPane.ERROR_MESSAGE);
 
 					return new ArrayList<>();
+				}
+
+				groupElement = tagElement.selectFirst(groupSelector);
+
+				if (groupElement != null) {
+					foundValidGroup = true;
+				}
+
+				if (emailSelector == null || emailSelector.isEmpty()) {
+					showDialog("Kein Email Selector für " + category + " gefunden!", "Fehler",
+							JOptionPane.ERROR_MESSAGE);
+
+					return new ArrayList<>();
+				}
+
+				emailElement = tagElement.selectFirst(emailSelector);
+
+				if (emailElement != null) {
+					foundValidEmail = true;
+				}
+
+				if (nameElement == null || groupElement == null || emailElement == null) {
+					continue;
+				}
+
+				if (nameElement != null) {
+					scrapedData.add(nameElement.text().trim());
+				}
+
+				if (groupElement != null) {
+					scrapedData.add(groupElement.ownText().trim());
+				}
+
+				if (emailElement != null) {
+					email = emailElement.ownText().trim();
+
+					if (email != null) {
+						scrapedData.add(email.trim());
+					} else {
+						showDialog(
+								"Keine Daten für " + category + " für den Email Selector " + emailSelector
+										+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+								"Fehler", JOptionPane.ERROR_MESSAGE);
+
+						return new ArrayList<>();
+					}
 				}
 			}
 		}
 
-		if (!idMatched && linkSelector == null) {
+		if (!foundValidName) {
 			showDialog(
-					"Keine Daten für " + category + " für die ID " + id
+					"Keine Daten für " + category + " für den Name Selector " + nameSelector
+							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
+
+			return new ArrayList<>();
+		}
+
+		if (!foundValidGroup) {
+			showDialog(
+					"Keine Daten für " + category + " für den Group Selector " + groupSelector
+							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+					"Fehler", JOptionPane.ERROR_MESSAGE);
+
+			return new ArrayList<>();
+		}
+
+		if (!foundValidEmail) {
+			showDialog(
+					"Keine Daten für " + category + " für den Email Selector " + emailSelector
 							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 
