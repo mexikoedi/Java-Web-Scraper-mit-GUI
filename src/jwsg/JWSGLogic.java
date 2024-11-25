@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 public class JWSGLogic {
 	// Datenstrukturen
 	private static final Map<String, List<String>> scrapedDataMap = new ConcurrentHashMap<>();
+	private static List<String> lastSelectedCategories = new ArrayList<>();
 
 	/**
 	 * Diese Methode wird verwendet, um die Daten zu erhalten, die von den
@@ -38,8 +39,6 @@ public class JWSGLogic {
 	 *         aufgetreten ist, sonst false.
 	 */
 	public boolean checkButtonPressed(List<String> list) {
-		List<String> lastSelectedCategories = new ArrayList<>();
-
 		if (list.isEmpty()) {
 			showDialog("Bitte wählen Sie mindestens ein Suchwort aus!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
@@ -117,7 +116,7 @@ public class JWSGLogic {
 			String url = null;
 			Document website = null;
 			Elements websiteElements = null;
-			List<String> pageData;
+			List<String> pageData = new ArrayList<>();
 			List<String> allScrapedData = new ArrayList<>();
 			List<String> scrapedData = new ArrayList<>();
 
