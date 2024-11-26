@@ -24,6 +24,8 @@ import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 import java.awt.Toolkit;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
@@ -74,7 +76,12 @@ public class JWSGLayout {
 		for (String category : selectedCategories) {
 			List<String> details = scrapedData.get(category);
 			String type = JWSGScrapingConfig.getType(category);
+			String bulletinBoardType = JWSGScrapingConfig.getBulletinBoardType();
 			String personType = JWSGScrapingConfig.getPersonType();
+			String title = null;
+			String date = null;
+			String content = null;
+			String subcontent = null;
 			String name = null;
 			String group = null;
 			String email = null;
@@ -82,8 +89,37 @@ public class JWSGLayout {
 			if (details != null && !details.isEmpty()) {
 				dataBuilder.append("=".repeat(category.length() + 2)).append("\n").append(category.toUpperCase())
 						.append("\n").append("=".repeat(category.length() + 2)).append("\n");
+				if (bulletinBoardType.equals(type)) {
+					// Gruppierung und Formatierung für Schwarzes Brett
+					for (int i = 0; i < details.size(); i += 4) {
+						title = i < details.size() ? details.get(i) : "";
+						date = (i + 1) < details.size() ? details.get(i + 1) : "";
+						content = (i + 2) < details.size() ? details.get(i + 2) : "";
+						subcontent = (i + 3) < details.size() ? details.get(i + 3) : "";
 
-				if (personType.equals(type)) {
+						if (date.endsWith(")")) {
+							date = date.substring(0, date.length() - 1);
+						}
+
+						if (!title.isEmpty()) {
+							dataBuilder.append("Titel: ").append(title).append("\n");
+						}
+
+						if (!date.isEmpty()) {
+							dataBuilder.append("Datum: ").append(date).append("\n");
+						}
+
+						if (!content.isEmpty()) {
+							dataBuilder.append("Inhalt: ").append(content).append("\n");
+						}
+
+						if (!subcontent.isEmpty()) {
+							dataBuilder.append("Zusätzlicher Inhalt: ").append(subcontent).append("\n");
+						}
+
+						dataBuilder.append("\n");
+					}
+				} else if (personType.equals(type)) {
 					// Gruppierung und Formatierung für Personen
 					for (int i = 0; i < details.size(); i += 3) {
 						name = i < details.size() ? details.get(i) : "";
@@ -108,6 +144,10 @@ public class JWSGLayout {
 							dataBuilder.append(detail).append("\n");
 						}
 					}
+				}
+
+				if (dataBuilder.length() > 1 && dataBuilder.charAt(dataBuilder.length() - 2) == '\n') {
+					dataBuilder.setLength(dataBuilder.length() - 1);
 				}
 
 				dataBuilder.append("\n");
@@ -188,7 +228,7 @@ public class JWSGLayout {
 		textAreaAppExplanation.setWrapStyleWord(true);
 		textAreaAppExplanation.setLineWrap(true);
 		textAreaAppExplanation.setText(
-				"Dieses Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen. Nutzen Sie die Dropdown-Liste, um nach einer oder mehreren Informationen zu suchen."
+				"Dieses Programm ermöglicht das unkomplizierte Abrufen von diversen HKA (Hochschule Karlsruhe – University of Applied Sciences) Informationen. Nutzen Sie die Dropdown-Liste, um nach einer oder mehreren Informationen zu suchen. Sie können durch die Nutzung der Steuerungs- oder Umschalttaste mehrere Suchwörter auswählen."
 						+ "\n© 2024-" + currentYear + " mexikoedi");
 		textAreaAppExplanation.setEditable(false);
 		GridBagConstraints gbc_textAreaAppExplanation = new GridBagConstraints();
@@ -227,6 +267,8 @@ public class JWSGLayout {
 		// JButton btnDropdown für GridBagLayout anpassen und zum Panel hinzufügen
 		JButton btnDropdown = new JButton("Suchwörter auswählen");
 		btnDropdown.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnDropdown.setPreferredSize(
+				new Dimension(btnDropdown.getPreferredSize().width, btnDropdown.getPreferredSize().height));
 		GridBagConstraints gbc_btnDropdown = new GridBagConstraints();
 		gbc_btnDropdown.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnDropdown.insets = new Insets(0, 0, 5, 5);
@@ -349,15 +391,18 @@ public class JWSGLayout {
 	}
 
 	/**
-	 * JList wird mit den vordefinierten Suchwörtern initialisiert.
+	 * JList wird mit den vordefinierten Suchwörtern alphabetisch sortiert
+	 * initialisiert.
 	 * 
-	 * @return DefaultListModel<String> welche die Liste mit den initialen Inhalten
-	 *         enthält.
+	 * @return DefaultListModel<String> welche die Liste mit den initialen
+	 *         alphabetisch sortierten Inhalten enthält.
 	 */
 	private DefaultListModel<String> initList() {
 		DefaultListModel<String> listModel = new DefaultListModel<>();
+		List<String> keywords = new ArrayList<>(JWSGScrapingConfig.getKeywordUrlMap().keySet());
+		Collections.sort(keywords);
 
-		for (String keyword : JWSGScrapingConfig.getKeywordUrlMap().keySet()) {
+		for (String keyword : keywords) {
 			listModel.addElement(keyword);
 		}
 

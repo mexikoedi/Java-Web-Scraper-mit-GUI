@@ -15,6 +15,7 @@ Nun können Sie das Programm über die Datei namens „Java Web Scraper mit GUI.
 
 ### Verwendung des Programms
 Im Programm können Sie aus einem Dropdown ein oder mehrere Suchwörter, zu welchen Sie Informationen benötigen, auswählen. <br>
+Mehrere Suchwörter können durch die Nutzung der Steuerungs- oder Umschalttaste ausgewählt werden. <br>
 Durch den Knopf „Abrufen“ werden die Informationen zu den davor ausgewählten Suchwörtern abgerufen, formatiert und entsprechend im Bereich „Daten“ angezeigt. <br>
 Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen. <br>
 TODO
@@ -206,6 +207,42 @@ public static String getTag(String keyword)
 public static String getSelector(String keyword)
 
 /**
+ * Diese Methode wird verwendet, um den Schwarzes Brett Titel Selektor für
+ * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+ *
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getBulletinBoardTitleSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Schwarzes Brett Datum Selektor für
+ * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+ *
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getBulletinBoardDateSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Schwarzes Brett Inhalt Selektor für
+ * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+ *
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getBulletinBoardContentSelector(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um den Schwarzes Brett Unterinhalt Selektor für
+ * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+ *
+ * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+ * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+ */
+public static String getBulletinBoardSubcontentSelector(String keyword)
+
+/**
  * Diese Methode wird verwendet, um den Personennamen Selektor für spezifische
  * Links für das angegebene Suchwort aus einer Map abzurufen.
  *
@@ -290,6 +327,42 @@ public static Map<String, String> getKeywordSelectorMap()
 
 /**
  * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Schwarzes Brett Titel zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Schwarzes Brett Titel.
+ */
+public static Map<String, String> getBulletinBoardTitleSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Schwarzes Brett Datum zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Schwarzes Brett Datum.
+ */
+public static Map<String, String> getBulletinBoardDateSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Schwarzes Brett Inhalt zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Schwarzes Brett Inhalt.
+ */
+public static Map<String, String> getBulletinBoardContentSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+ * Selektoren für spezifische Links für Schwarzes Brett Unterinhalt zu erhalten.
+ * 
+ * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+ *         für Schwarzes Brett Unterinhalt.
+ */
+public static Map<String, String> getBulletinBoardSubcontentSelectorMap()
+
+/**
+ * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
  * Selektoren für spezifische Links für Personennamen zu erhalten.
  * 
  * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
@@ -324,18 +397,47 @@ public static Map<String, String> getPersonEmailSelectorMap()
 public static String getProgramElementClass()
 
 /**
- * Diese Methode wird verwendet, um die Elementklasse für Termine zu erhalten.
+ * Diese Methode wird verwendet, um die Elementklasse für Semestertermine zu erhalten.
  * 
- * @return Die Elementklasse für Termine.
+ * @return Die Elementklasse für Semestertermine.
  */
 public static String getDateElementClass()
 
 /**
- * Diese Methode wird verwendet, um den Container für Termine zu erhalten.
+ * Diese Methode wird verwendet, um die Elementklasse für Schwarze Bretter zu
+ * erhalten.
  * 
- * @return Der Container für Termine.
+ * @return Die Elementklasse für Schwarze Bretter.
+ */
+public static String getBulletinBoardElementClass()
+
+/**
+ * Diese Methode wird verwendet, um die Elementklasse für Personen zu erhalten.
+ * 
+ * @return Die Elementklasse für Personen.
  */
 public static String getPersonElementClass()
+
+/**
+ * Diese Methode wird verwendet, um den Typ für Studiengänge zu erhalten.
+ * 
+ * @return Der Typ für Studiengänge.
+ */
+public static String getProgramType()
+
+/**
+ * Diese Methode wird verwendet, um den Typ für Semestertermine zu erhalten.
+ * 
+ * @return Der Typ für Semestertermine.
+ */
+public static String getDateType()
+
+/**
+ * Diese Methode wird verwendet, um den Typ für Schwarze Bretter zu erhalten.
+ * 
+ * @return Der Typ für Schwarze Bretter.
+ */
+public static String getBulletinBoardType()
 
 /**
  * Diese Methode wird verwendet, um den Typ für Personen zu erhalten.
@@ -377,10 +479,11 @@ Datei: JWSGLayout.java
 private void initialize()
 
 /**
- * JList wird mit den vordefinierten Suchwörtern initialisiert.
+ * JList wird mit den vordefinierten Suchwörtern alphabetisch sortiert
+ * initialisiert.
  * 
- * @return DefaultListModel<String> welche die Liste mit den initialen Inhalten
- *         enthält.
+ * @return DefaultListModel<String> welche die Liste mit den initialen
+ *         alphabetisch sortierten Inhalten enthält.
  */
 private DefaultListModel<String> initList()
 ```
@@ -423,6 +526,23 @@ private List<String> processProgramData(Document website, String category, Strin
  * @return Die Liste, die die extrahierten Daten enthält.
  */
 private List<String> processDateData(Document website, String category, String elementClass, String container, String id, String tag)
+
+/**
+ * Diese Methode wird verwendet, um die Daten der Schwarzen Bretter zu
+ * extrahieren und zu verarbeiten.
+ * 
+ * @param website            Die Webseite, von der die Daten extrahiert werden
+ *                           sollen.
+ * @param category           Die Kategorie des Suchworts (Schwarze Bretter).
+ * @param elementClass       Die Klasse der Elemente, die die Daten enthalten.
+ * @param titleSelector      Der Selektor für die Titel der Schwarzen Bretter.
+ * @param dateSelector       Der Selektor für die Daten der Schwarzen Bretter.
+ * @param contentSelector    Der Selektor für den Inhalt der Schwarzen Bretter.
+ * @param subcontentSelector Der Selektor für den Unterinhalt der Schwarzen
+ *                           Bretter.
+ * @return Die Liste, die die extrahierten Daten enthält.
+ */
+private List<String> processBulletinBoardData(Document website, String category, String elementClass, String titleSelector, String dateSelector, String contentSelector, String subcontentSelector)
 
 /**
  * Diese Methode wird verwendet, um die Daten der Personen zu extrahieren und zu

@@ -19,16 +19,45 @@ public class JWSGScrapingConfig {
 	private static final Map<String, String> keywordTagMap = new HashMap<>();
 	// Map für Suchwörter und Selektoren für spezifische Links
 	private static final Map<String, String> keywordSelectorMap = new HashMap<>();
+	// Map für Schwarzes Brett und Selektoren für spezifische Links für Schwarze
+	// Bretter
+	private static final Map<String, String> bulletinBoardTitleSelectorMap = new HashMap<>();
+	private static final Map<String, String> bulletinBoardDateSelectorMap = new HashMap<>();
+	private static final Map<String, String> bulletinBoardContentSelectorMap = new HashMap<>();
+	private static final Map<String, String> bulletinBoardSubcontentSelectorMap = new HashMap<>();
 	// Map für Suchwörter und Selektoren für spezifische Links für Personen
 	private static final Map<String, String> personNameSelectorMap = new HashMap<>();
 	private static final Map<String, String> personGroupSelectorMap = new HashMap<>();
 	private static final Map<String, String> personEmailSelectorMap = new HashMap<>();
+	// Elementklasse für Studiengänge
+	private static final String programElementClass = "table__cell-title";
+	// Elementklasse für Semestertermine
+	private static final String dateElementClass = "c-tabs__content";
+	// Elementklasse für Schwarze Bretter
+	private static final String bulletinBoardElementClass = "ui-card ui-widget ui-widget-content ui-corner-all";
+	// Elementklasse für Personen
+	private static final String personElementClass = "c-users__table";
+	// Typ für Studiengänge
+	private static final String programType = "Studiengänge";
+	// Typ für Semestertermine
+	private static final String dateType = "Semestertermine";
+	// Typ für Schwarze Bretter
+	private static final String bulletinBoardType = "Schwarzes Brett";
+	// Typ für Personen
+	private static final String personType = "Personen";
+	// Pagination Token für Personen
+	private static final String personPaginationToken = "?tx_users_pi1";
+	// Pagination Format für Personen
+	private static final String personPaginationFormat = "/page-%d?tx_users_pi1";
 	static {
 		// Typen für die vordefinierten Suchwörter
 		keywordTypeMap.put("Studiengänge Bachelor", "Studiengänge");
 		keywordTypeMap.put("Studiengänge Master", "Studiengänge");
 		keywordTypeMap.put("Terminübersicht - Wintersemester", "Semestertermine");
 		keywordTypeMap.put("Terminübersicht - Sommersemester", "Semestertermine");
+		keywordTypeMap.put("Schwarzes Brett Informatik (Bachelor)", "Schwarzes Brett");
+		keywordTypeMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "Schwarzes Brett");
+		keywordTypeMap.put("Schwarzes Brett Informatik (Master)", "Schwarzes Brett");
 		// URLs für die vordefinierten Suchwörter
 		keywordUrlMap.put("Studiengänge Bachelor", "https://www.h-ka.de/studieren/studienangebot/bachelor");
 		keywordUrlMap.put("Studiengänge Master", "https://www.h-ka.de/studieren/studienangebot/master");
@@ -36,11 +65,22 @@ public class JWSGScrapingConfig {
 				"https://www.h-ka.de/die-hochschule-karlsruhe/aktuelles/termine/semestertermine");
 		keywordUrlMap.put("Terminübersicht - Sommersemester",
 				"https://www.h-ka.de/die-hochschule-karlsruhe/aktuelles/termine/semestertermine");
+		keywordUrlMap.put("Schwarzes Brett Informatik (Bachelor)",
+				"https://intranet.hka-iwi.de/info/bulletinboard/INFB");
+		keywordUrlMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
+				"https://intranet.hka-iwi.de/info/bulletinboard/MINB");
+		keywordUrlMap.put("Schwarzes Brett Informatik (Master)", "https://intranet.hka-iwi.de/info/bulletinboard/INFM");
 		// Verwendete Elementklassen für die jeweiligen Suchwörter
 		keywordElementMap.put("Studiengänge Bachelor", "table__cell-title");
 		keywordElementMap.put("Studiengänge Master", "table__cell-title");
 		keywordElementMap.put("Terminübersicht - Wintersemester", "c-tabs__content");
 		keywordElementMap.put("Terminübersicht - Sommersemester", "c-tabs__content");
+		keywordElementMap.put("Schwarzes Brett Informatik (Bachelor)",
+				"ui-card ui-widget ui-widget-content ui-corner-all");
+		keywordElementMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
+				"ui-card ui-widget ui-widget-content ui-corner-all");
+		keywordElementMap.put("Schwarzes Brett Informatik (Master)",
+				"ui-card ui-widget ui-widget-content ui-corner-all");
 		// Container für die jeweiligen Suchwörter
 		keywordContainerMap.put("Terminübersicht - Wintersemester", "o-container o-container--spacing-y ");
 		keywordContainerMap.put("Terminübersicht - Sommersemester", "o-container o-container--spacing-y ");
@@ -50,9 +90,28 @@ public class JWSGScrapingConfig {
 		// Tags für die jeweiligen Suchwörter
 		keywordTagMap.put("Terminübersicht - Wintersemester", "p");
 		keywordTagMap.put("Terminübersicht - Sommersemester", "p");
+		keywordTagMap.put("Schwarzes Brett Informatik (Bachelor)", "div");
+		keywordTagMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div");
+		keywordTagMap.put("Schwarzes Brett Informatik (Master)", "div");
 		// Selektoren für spezifische Links innerhalb der Elemente
 		keywordSelectorMap.put("Studiengänge Bachelor", "a.c-in2studyfinder__link");
 		keywordSelectorMap.put("Studiengänge Master", "a.c-in2studyfinder__link");
+		// Selektoren für spezifische Links innerhalb der Elemente für Schwarzes Brett
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-title h2");
+		bulletinBoardDateSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-title span");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-content h3");
+		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Informatik (Bachelor)",
+				"div.ui-card-content span.styleatags");
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-title h2");
+		bulletinBoardDateSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-title span");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-content h3");
+		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
+				"div.ui-card-content span.styleatags");
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-title h2");
+		bulletinBoardDateSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-title span");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-content h3");
+		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Informatik (Master)",
+				"div.ui-card-content span.styleatags");
 		// Alle Personen
 		Map<String, String> personGroup = new HashMap<>();
 		personGroup.put("Ansprechperson für Antidiskriminierung", "25");
@@ -213,6 +272,50 @@ public class JWSGScrapingConfig {
 	}
 
 	/**
+	 * Diese Methode wird verwendet, um den Schwarzes Brett Titel Selektor für
+	 * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+	 *
+	 * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+	 * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+	 */
+	public static String getBulletinBoardTitleSelector(String keyword) {
+		return bulletinBoardTitleSelectorMap.get(keyword);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Schwarzes Brett Datum Selektor für
+	 * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+	 *
+	 * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+	 * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+	 */
+	public static String getBulletinBoardDateSelector(String keyword) {
+		return bulletinBoardDateSelectorMap.get(keyword);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Schwarzes Brett Inhalt Selektor für
+	 * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+	 *
+	 * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+	 * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+	 */
+	public static String getBulletinBoardContentSelector(String keyword) {
+		return bulletinBoardContentSelectorMap.get(keyword);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Schwarzes Brett Unterinhalt Selektor für
+	 * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
+	 *
+	 * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
+	 * @return Der Selektor für spezifische Links für das angegebene Suchwort.
+	 */
+	public static String getBulletinBoardSubcontentSelector(String keyword) {
+		return bulletinBoardSubcontentSelectorMap.get(keyword);
+	}
+
+	/**
 	 * Diese Methode wird verwendet, um den Personennamen Selektor für spezifische
 	 * Links für das angegebene Suchwort aus einer Map abzurufen.
 	 *
@@ -317,6 +420,50 @@ public class JWSGScrapingConfig {
 
 	/**
 	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+	 * Selektoren für spezifische Links für Schwarzes Brett Titel zu erhalten.
+	 * 
+	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+	 *         für Schwarzes Brett Titel.
+	 */
+	public static Map<String, String> getBulletinBoardTitleSelectorMap() {
+		return new HashMap<>(bulletinBoardTitleSelectorMap);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+	 * Selektoren für spezifische Links für Schwarzes Brett Datum zu erhalten.
+	 * 
+	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+	 *         für Schwarzes Brett Datum.
+	 */
+	public static Map<String, String> getBulletinBoardDateSelectorMap() {
+		return new HashMap<>(bulletinBoardDateSelectorMap);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+	 * Selektoren für spezifische Links für Schwarzes Brett Inhalt zu erhalten.
+	 * 
+	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+	 *         für Schwarzes Brett Inhalt.
+	 */
+	public static Map<String, String> getBulletinBoardContentSelectorMap() {
+		return new HashMap<>(bulletinBoardContentSelectorMap);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
+	 * Selektoren für spezifische Links für Schwarzes Brett Unterinhalt zu erhalten.
+	 * 
+	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
+	 *         für Schwarzes Brett Unterinhalt.
+	 */
+	public static Map<String, String> getBulletinBoardSubcontentSelectorMap() {
+		return new HashMap<>(bulletinBoardSubcontentSelectorMap);
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
 	 * Selektoren für spezifische Links für Personennamen zu erhalten.
 	 * 
 	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
@@ -355,25 +502,63 @@ public class JWSGScrapingConfig {
 	 * @return Die Elementklasse für Studiengänge.
 	 */
 	public static String getProgramElementClass() {
-		return "table__cell-title";
+		return programElementClass;
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um die Elementklasse für Termine zu erhalten.
+	 * Diese Methode wird verwendet, um die Elementklasse für Semestertermine zu
+	 * erhalten.
 	 * 
-	 * @return Die Elementklasse für Termine.
+	 * @return Die Elementklasse für Semestertermine.
 	 */
 	public static String getDateElementClass() {
-		return "c-tabs__content";
+		return dateElementClass;
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um den Container für Termine zu erhalten.
+	 * Diese Methode wird verwendet, um die Elementklasse für Schwarze Bretter zu
+	 * erhalten.
 	 * 
-	 * @return Der Container für Termine.
+	 * @return Die Elementklasse für Schwarze Bretter.
+	 */
+	public static String getBulletinBoardElementClass() {
+		return bulletinBoardElementClass;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die Elementklasse für Personen zu erhalten.
+	 * 
+	 * @return Die Elementklasse für Personen.
 	 */
 	public static String getPersonElementClass() {
-		return "c-users__table";
+		return personElementClass;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Typ für Studiengänge zu erhalten.
+	 * 
+	 * @return Der Typ für Studiengänge.
+	 */
+	public static String getProgramType() {
+		return programType;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Typ für Semestertermine zu erhalten.
+	 * 
+	 * @return Der Typ für Semestertermine.
+	 */
+	public static String getDateType() {
+		return dateType;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um den Typ für Schwarze Bretter zu erhalten.
+	 * 
+	 * @return Der Typ für Schwarze Bretter.
+	 */
+	public static String getBulletinBoardType() {
+		return bulletinBoardType;
 	}
 
 	/**
@@ -382,7 +567,7 @@ public class JWSGScrapingConfig {
 	 * @return Der Typ für Personen.
 	 */
 	public static String getPersonType() {
-		return "Personen";
+		return personType;
 	}
 
 	/**
@@ -392,7 +577,7 @@ public class JWSGScrapingConfig {
 	 * @return Der Pagination Token für Personen.
 	 */
 	public static String getPersonPaginationToken() {
-		return "?tx_users_pi1";
+		return personPaginationToken;
 	}
 
 	/**
@@ -402,6 +587,6 @@ public class JWSGScrapingConfig {
 	 * @return Das Format für die Pagination für Personen.
 	 */
 	public static String getPersonPaginationFormat() {
-		return "/page-%d?tx_users_pi1";
+		return personPaginationFormat;
 	}
 }
