@@ -31,6 +31,7 @@ Folgende Faktoren beeinflussen die Leistung:
 - Das eigene Netzwerk
 - Die Hardware des eigenen Endgeräts
 - Die Netzwerkauslastung des Servers
+
 Das Programm arbeitet effizient und erfordert daher keine leistungsstarke Hardware. <br>
 Beim Abrufen aller Daten wurden lediglich 300 MB RAM verwendet, während die Auslastung anderer Hardwarekomponenten (CPU/GPU/Speicher) nicht messbar war.
 
