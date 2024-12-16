@@ -36,7 +36,12 @@ Das Programm arbeitet effizient und erfordert daher keine leistungsstarke Hardwa
 Beim Abrufen aller Daten wurden lediglich 300 MB RAM verwendet, während die Auslastung anderer Hardwarekomponenten (CPU/GPU/Speicher) nicht messbar war.
 
 ### Beispiele
-TODO
+Die grafische Benutzeroberfläche:
+![GUI](https://github.com/user-attachments/assets/bf4afb65-724c-49f0-b71f-0d068e18cc58 "GUI") <br>
+Auswählen von Suchwörtern:
+![Suchwortauswahl](https://github.com/user-attachments/assets/5ce48d6b-04b3-4487-a0c5-9dceb9c5848b "Suchwortauswahl") <br>
+Die abgerufenen Daten:
+![Daten](https://github.com/user-attachments/assets/b9a46843-80f3-42ad-9f25-62b69be827bc "Daten")
 
 ## Entwicklerdokumentation
 ### Informationen zum Java-Projekt
