@@ -29,11 +29,11 @@ Das Programm benötigt etwa 30 Sekunden, um über 100 Anfragen zu verarbeiten. <
 Wenn alle Daten im Cache gespeichert sind, dauert das Laden der Daten ungefähr 50 Millisekunden. <br>
 Folgende Faktoren beeinflussen die Leistung:
 - Das eigene Netzwerk
-- Die Hardware des eigenen Endgeräts
-- Die Netzwerkauslastung des Servers
+- Die Auslastung des Servers
+- Die Hardware des eigenen Endgeräts (vernachlässigbar)
 
-Das Programm arbeitet effizient und erfordert daher keine leistungsstarke Hardware. <br>
-Beim Abrufen aller Daten wurden lediglich 300 MB RAM verwendet, während die Auslastung anderer Hardwarekomponenten (CPU/GPU/Speicher) nicht messbar war.
+Das Programm arbeitet effizient und erfordert daher keine leistungsstarke Hardware, wobei eine gute Netzanbindung von Vorteil ist. <br>
+Beim Abrufen aller Daten wurden lediglich 300 MB RAM verwendet, während die Auslastung anderer Hardwarekomponenten (CPU/GPU/Speicher/ …) nicht messbar war.
 
 ### Beispiele
 Die grafische Benutzeroberfläche:
