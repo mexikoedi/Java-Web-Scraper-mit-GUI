@@ -18,17 +18,28 @@ Im Programm können Sie aus einem Dropdown ein oder mehrere Suchwörter, zu welc
 Mehrere Suchwörter können durch die Nutzung der Steuerungs- oder Umschalttaste ausgewählt werden. <br>
 Durch den Knopf „Abrufen“ werden die Informationen zu den davor ausgewählten Suchwörtern abgerufen, formatiert und entsprechend im Bereich „Daten“ angezeigt. <br>
 Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen. <br>
-TODO
+Zudem wird im Programm nach dem Abrufen der Daten angezeigt, wie lange dies gedauert hat. <br>
+Außerdem wird der Datenabruf durch eine Fortschrittsanzeige begleitet <br>
+Die abgerufenen Daten können anschließend zu JSON-Dateien exportiert und im „jwsg_export“-Ordner betrachtet werden. <br>
+Um die Leistung des Programms zu verbessern, wird Caching benutzt, um Daten, welche zuvor abgerufen wurden, innerhalb einer Stunde schnell wiederzuerhalten. <br>
+Die Cache-Dateien befinden sich im „jwsg_cache“-Ordner.
 
 ### Leistung
-TODO
+Das Programm benötigt etwa 30 Sekunden, um über 100 Anfragen zu verarbeiten. <br>
+Wenn alle Daten im Cache gespeichert sind, dauert das Laden der Daten ungefähr 50 Millisekunden. <br>
+Folgende Faktoren beeinflussen die Leistung:
+- Das eigene Netzwerk
+- Die Hardware des eigenen Endgeräts
+- Die Netzwerkauslastung des Servers
+Das Programm arbeitet effizient und erfordert daher keine leistungsstarke Hardware. <br>
+Beim Abrufen aller Daten wurden lediglich 300 MB RAM verwendet, während die Auslastung anderer Hardwarekomponenten (CPU/GPU/Speicher) nicht messbar war.
 
 ### Beispiele
 TODO
 
 ## Entwicklerdokumentation
 ### Informationen zum Java-Projekt
-Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mit der Version „2024-09“ erstellt. <br>
+Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mit der Version „2024-09“ und im späteren Verlauf auch mit der Version „2024-12“ erstellt. <br>
 Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) mit der Version „22.0.2“ im Einsatz. <br>
 Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
@@ -90,7 +101,6 @@ Falls Sie eine andere IDE wie zum Beispiel die [IntelliJ IDEA](https://www.jetbr
 <details>
 <summary>public Methoden</summary>
 
-TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java
 
@@ -113,6 +123,42 @@ public JWSGLayout()
  * @param scrapedData        Die gescrapten Daten.
  */
 public void initData(List<String> selectedCategories, Map<String, List<String>> scrapedData)
+
+/**
+ * Hervorheben des spezifischen Ergebnisses im Text.
+ * 
+ * @param result      Das spezifische Ergebnis im Text.
+ * @param resultIndex Der Index des spezifischen Ergebnisses im Text.
+ */
+public static void highlightResult(String result, int resultIndex)
+
+/**
+ * Diese Methode setzt den Fortschrittsbalken zurück.
+ */
+public static void resetProgressBar()
+
+/**
+ * Diese Methode setzt den Fortschrittsbalken auf sichtbar oder unsichtbar.
+ * 
+ * @param visible Der Wert, ob der Fortschrittsbalken sichtbar oder unsichtbar
+ *                ist.
+ */
+public static void setProgressBarVisible(boolean visible)
+
+/**
+ * Diese Methode aktualisiert den Fortschrittsbalken.
+ * 
+ * @param progress Der Wert, um den der Fortschrittsbalken aktualisiert wird.
+ */
+public static void updateProgressBar(int progress)
+
+/**
+ * Diese Methode setzt die Status der interaktiven Komponenten.
+ * 
+ * @param status Der Wert, ob die interaktiven Komponenten aktiviert oder
+ *               deaktiviert sind.
+ */
+public static void setStatusInteractiveComponents(boolean status)
 ```
 
 Paket: jwsg <br>
@@ -125,7 +171,48 @@ Datei: JWSGLogic.java
  * 
  * @return Die Map, die die Suchwörter und die zugehörigen Daten enthält.
  */
-public Map<String, List<String>> getScrapedDataMap()
+public static Map<String, List<String>> getScrapedDataMap()
+
+/**
+ * Diese Methode wird verwendet, um die Verarbeitungsdauer für das Scrapen zu
+ * erhalten.
+ * 
+ * @return Die Verarbeitungsdauer für das Scrapen.
+ */
+public static long getDuration()
+
+/**
+ * Diese Methode wird verwendet, um eine Dialogbox mit dem entsprechenden Titel,
+ * dem passenden Text und dem dazugehörigen Typ asynchron anzuzeigen, um den
+ * Thread nicht zu blockieren.
+ * 
+ * @param message     Der Text, der in der Dialogbox angezeigt werden soll.
+ * @param title       Der Titel der Dialogbox.
+ * @param messageType Der Typ der Dialogbox.
+ */
+public static void showDialog(String message, String title, int messageType)
+
+/**
+ * Diese Methode wird verwendet, um die Suche nach einem bestimmten Suchbegriff
+ * in den gescrapten Daten zu starten.
+ * 
+ * @param keyword Der Suchbegriff, nach dem gesucht werden soll.
+ */
+public static void search(String keyword)
+
+/**
+ * Diese Methode wird verwendet, um das nächste Suchergebnis anzuzeigen.
+ */
+public static void showNextResult()
+
+/**
+ * Diese Methode wird verwendet, um die Daten in einer JSON-Datei alphabetisch
+ * sortiert zu speichern.
+ * 
+ * @param scrapedData Die Map, die die Suchwörter und die zugehörigen Daten
+ *                    enthält.
+ */
+public static void exportData(Map<String, List<String>> scrapedData)
 
 /**
  * Diese Methode wird verwendet, um zu überprüfen, ob die Schaltfläche "Abrufen"
@@ -136,7 +223,7 @@ public Map<String, List<String>> getScrapedDataMap()
  * @return true, wenn die Schaltfläche gedrückt wurde und keiner der Sonderfälle
  *         aufgetreten ist, sonst false.
  */
-public boolean checkButtonPressed(List<String> list)
+public static boolean checkButtonPressed(List<String> list)
 ```
 
 Paket: jwsg <br>
@@ -270,123 +357,12 @@ public static String getPersonGroupSelector(String keyword)
 public static String getPersonEmailSelector(String keyword)
 
 /**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Typen zu
- * erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Typen.
- */
-public static Map<String, String> getKeywordTypeMap()
-
-/**
  * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und URLs zu
  * erhalten.
  * 
  * @return Die gesamte Map mit Suchwörtern und URLs.
  */
 public static Map<String, String> getKeywordUrlMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Elementklassen zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Elementklassen.
- */
-public static Map<String, String> getKeywordElementMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Containern zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Containern.
- */
-public static Map<String, String> getKeywordContainerMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und IDs zu
- * erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und IDs.
- */
-public static Map<String, String> getKeywordIdMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Tags zu
- * erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Tags.
- */
-public static Map<String, String> getKeywordTagMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links.
- */
-public static Map<String, String> getKeywordSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Schwarzes Brett Titel zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Schwarzes Brett Titel.
- */
-public static Map<String, String> getBulletinBoardTitleSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Schwarzes Brett Datum zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Schwarzes Brett Datum.
- */
-public static Map<String, String> getBulletinBoardDateSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Schwarzes Brett Inhalt zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Schwarzes Brett Inhalt.
- */
-public static Map<String, String> getBulletinBoardContentSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Schwarzes Brett Unterinhalt zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Schwarzes Brett Unterinhalt.
- */
-public static Map<String, String> getBulletinBoardSubcontentSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Personennamen zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Personennamen.
- */
-public static Map<String, String> getPersonNameSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Personengruppen zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Personengruppen.
- */
-public static Map<String, String> getPersonGroupSelectorMap()
-
-/**
- * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
- * Selektoren für spezifische Links für Personenemail zu erhalten.
- * 
- * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
- *         für Personenemail.
- */
-public static Map<String, String> getPersonEmailSelectorMap()
 
 /**
  * Diese Methode wird verwendet, um die Elementklasse für Studiengänge zu
@@ -417,20 +393,6 @@ public static String getBulletinBoardElementClass()
  * @return Die Elementklasse für Personen.
  */
 public static String getPersonElementClass()
-
-/**
- * Diese Methode wird verwendet, um den Typ für Studiengänge zu erhalten.
- * 
- * @return Der Typ für Studiengänge.
- */
-public static String getProgramType()
-
-/**
- * Diese Methode wird verwendet, um den Typ für Semestertermine zu erhalten.
- * 
- * @return Der Typ für Semestertermine.
- */
-public static String getDateType()
 
 /**
  * Diese Methode wird verwendet, um den Typ für Schwarze Bretter zu erhalten.
@@ -467,7 +429,6 @@ public static String getPersonPaginationFormat()
 <details>
 <summary>private Methoden</summary>
 
-TODO <br>
 Paket: jwsg <br>
 Datei: JWSGLayout.java
 
@@ -486,6 +447,11 @@ private void initialize()
  *         alphabetisch sortierten Inhalten enthält.
  */
 private DefaultListModel<String> initList()
+
+/**
+ * Durchführung der Suche nach einem Suchbegriff.
+ */
+private void performSearch()
 ```
 
 Paket: jwsg <br>
@@ -494,11 +460,13 @@ Datei: JWSGLogic.java
 ```java	
 /**
  * Diese Methode wird verwendet, um die Daten von den ausgewählten Suchwörtern
- * mit ihren entsprechenden URLs parallel abzurufen.
+ * mit ihren entsprechenden URLs parallel abzurufen und in einer Map zu
+ * speichern. Verzögerung für Anfragen, Cache, Fortschrittsbalken und
+ * SwingWorker werden verwendet.
  *
  * @param categories Die Liste der ausgewählten Suchwörter.
  */
-private void scrapData(List<String> categories)
+private static void scrapData(List<String> categories)
 
 /**
  * Diese Methode wird verwendet, um die Daten der Studiengänge zu extrahieren
@@ -511,7 +479,7 @@ private void scrapData(List<String> categories)
  *                     Elemente.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processProgramData(Document website, String category, String elementClass, String linkSelector)
+private static List<String> processProgramData(Document website, String category, String elementClass, String linkSelector)
 
 /**
  * Diese Methode wird verwendet, um die Daten der Semestertermine zu extrahieren
@@ -525,7 +493,7 @@ private List<String> processProgramData(Document website, String category, Strin
  * @param tag          Der Tag für die jeweiligen Suchwörter
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processDateData(Document website, String category, String elementClass, String container, String id, String tag)
+private static List<String> processDateData(Document website, String category, String elementClass, String container, String id, String tag)
 
 /**
  * Diese Methode wird verwendet, um die Daten der Schwarzen Bretter zu
@@ -542,7 +510,7 @@ private List<String> processDateData(Document website, String category, String e
  *                           Bretter.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processBulletinBoardData(Document website, String category, String elementClass, String titleSelector, String dateSelector, String contentSelector, String subcontentSelector)
+private static List<String> processBulletinBoardData(Document website, String category, String elementClass, String titleSelector, String dateSelector, String contentSelector, String subcontentSelector)
 
 /**
  * Diese Methode wird verwendet, um die Daten der Personen zu extrahieren und zu
@@ -558,18 +526,40 @@ private List<String> processBulletinBoardData(Document website, String category,
  * @param emailSelector Der Selektor für die E-Mail-Adressen der Personen.
  * @return Die Liste, die die extrahierten Daten enthält.
  */
-private List<String> processPersonData(Document website, String category, String elementClass, String tag, String nameSelector, String groupSelector, String emailSelector)
+private static List<String> processPersonData(Document website, String category, String elementClass, String tag, String nameSelector, String groupSelector, String emailSelector)
 
 /**
- * Diese Methode wird verwendet, um eine Dialogbox mit dem entsprechenden Titel,
- * dem passenden Text und dem dazugehörigen Typ asynchron anzuzeigen, um den
- * Thread nicht zu blockieren.
+ * Diese Methode wird verwendet, um den Dateinamen für den Cache zu erstellen.
  * 
- * @param message     Der Text, der in der Dialogbox angezeigt werden soll.
- * @param title       Der Titel der Dialogbox.
- * @param messageType Der Typ der Dialogbox.
+ * @param category Das Suchwort, für das der Cache erstellt werden soll.
+ * @return Der Dateiname für den Cache.
  */
-private void showDialog(String message, String title, int messageType)
+private static String getCacheFileName(String category)
+
+/**
+ * Diese Methode wird verwendet, um zu überprüfen, ob der Cache gültig ist.
+ * 
+ * @param cacheFileName       Der Dateiname des Caches.
+ * @param cacheDurationMillis Die Dauer des Caches in Millisekunden.
+ * @return true, wenn der Cache gültig ist, sonst false.
+ */
+private static boolean isCacheValid(String cacheFileName, long cacheDurationMillis)
+
+/**
+ * Diese Methode wird verwendet, um die Daten in den Cache zu speichern.
+ * 
+ * @param cacheFileName Der Dateiname des Caches.
+ * @param data          Die Daten, die in den Cache gespeichert werden sollen.
+ */
+private static void saveToCache(String cacheFileName, List<String> data)
+
+/**
+ * Diese Methode wird verwendet, um die Daten aus dem Cache zu laden.
+ * 
+ * @param cacheFileName Der Dateiname des Caches.
+ * @return Die Daten, die aus dem Cache geladen wurden.
+ */
+private static List<String> loadFromCache(String cacheFileName)
 ```
 </details>
 

@@ -37,10 +37,6 @@ public class JWSGScrapingConfig {
 	private static final String bulletinBoardElementClass = "ui-card ui-widget ui-widget-content ui-corner-all";
 	// Elementklasse für Personen
 	private static final String personElementClass = "c-users__table";
-	// Typ für Studiengänge
-	private static final String programType = "Studiengänge";
-	// Typ für Semestertermine
-	private static final String dateType = "Semestertermine";
 	// Typ für Schwarze Bretter
 	private static final String bulletinBoardType = "Schwarzes Brett";
 	// Typ für Personen
@@ -349,16 +345,6 @@ public class JWSGScrapingConfig {
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Typen zu
-	 * erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Typen.
-	 */
-	public static Map<String, String> getKeywordTypeMap() {
-		return new HashMap<>(keywordTypeMap);
-	}
-
-	/**
 	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und URLs zu
 	 * erhalten.
 	 * 
@@ -366,133 +352,6 @@ public class JWSGScrapingConfig {
 	 */
 	public static Map<String, String> getKeywordUrlMap() {
 		return new HashMap<>(keywordUrlMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Elementklassen zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Elementklassen.
-	 */
-	public static Map<String, String> getKeywordElementMap() {
-		return new HashMap<>(keywordElementMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Containern zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Containern.
-	 */
-	public static Map<String, String> getKeywordContainerMap() {
-		return new HashMap<>(keywordContainerMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und IDs zu
-	 * erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und IDs.
-	 */
-	public static Map<String, String> getKeywordIdMap() {
-		return new HashMap<>(keywordIdMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und Tags zu
-	 * erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Tags.
-	 */
-	public static Map<String, String> getKeywordTagMap() {
-		return new HashMap<>(keywordTagMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links.
-	 */
-	public static Map<String, String> getKeywordSelectorMap() {
-		return new HashMap<>(keywordSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Schwarzes Brett Titel zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Schwarzes Brett Titel.
-	 */
-	public static Map<String, String> getBulletinBoardTitleSelectorMap() {
-		return new HashMap<>(bulletinBoardTitleSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Schwarzes Brett Datum zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Schwarzes Brett Datum.
-	 */
-	public static Map<String, String> getBulletinBoardDateSelectorMap() {
-		return new HashMap<>(bulletinBoardDateSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Schwarzes Brett Inhalt zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Schwarzes Brett Inhalt.
-	 */
-	public static Map<String, String> getBulletinBoardContentSelectorMap() {
-		return new HashMap<>(bulletinBoardContentSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Schwarzes Brett Unterinhalt zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Schwarzes Brett Unterinhalt.
-	 */
-	public static Map<String, String> getBulletinBoardSubcontentSelectorMap() {
-		return new HashMap<>(bulletinBoardSubcontentSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Personennamen zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Personennamen.
-	 */
-	public static Map<String, String> getPersonNameSelectorMap() {
-		return new HashMap<>(personNameSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Personengruppen zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Personengruppen.
-	 */
-	public static Map<String, String> getPersonGroupSelectorMap() {
-		return new HashMap<>(personGroupSelectorMap);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um die gesamte Map mit Suchwörtern und
-	 * Selektoren für spezifische Links für Personenemail zu erhalten.
-	 * 
-	 * @return Die gesamte Map mit Suchwörtern und Selektoren für spezifische Links
-	 *         für Personenemail.
-	 */
-	public static Map<String, String> getPersonEmailSelectorMap() {
-		return new HashMap<>(personEmailSelectorMap);
 	}
 
 	/**
@@ -532,24 +391,6 @@ public class JWSGScrapingConfig {
 	 */
 	public static String getPersonElementClass() {
 		return personElementClass;
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um den Typ für Studiengänge zu erhalten.
-	 * 
-	 * @return Der Typ für Studiengänge.
-	 */
-	public static String getProgramType() {
-		return programType;
-	}
-
-	/**
-	 * Diese Methode wird verwendet, um den Typ für Semestertermine zu erhalten.
-	 * 
-	 * @return Der Typ für Semestertermine.
-	 */
-	public static String getDateType() {
-		return dateType;
 	}
 
 	/**
