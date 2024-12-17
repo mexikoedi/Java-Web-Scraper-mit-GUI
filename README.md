@@ -49,7 +49,7 @@ Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mi
 Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) mit der Version „22.0.2“ im Einsatz. <br>
 Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
-Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt. <br>
+Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt und für die weitere Reaktionsfähigkeit der grafischen Oberfläche wurde „SwingWorker“ genutzt. <br>
 Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
 
 ### Struktur des Projekts
