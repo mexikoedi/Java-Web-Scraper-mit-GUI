@@ -155,11 +155,15 @@ public class JWSGLogic {
 		}
 
 		if (!cacheValid) {
-			showDialog("Der Cache ist abgelaufen. Bitte scrapen Sie die Daten erneut, bevor Sie exportieren.",
+			showDialog("Der Cache ist abgelaufen. Bitte scrapen Sie die Daten erneut, bevor Sie exportieren!",
 					"Hinweis", JOptionPane.INFORMATION_MESSAGE);
 
 			return;
 		}
+
+		boolean exportSuccess = false;
+		boolean exportFailed = false;
+		boolean alreadyExported = false;
 
 		for (String category : scrapedData.keySet()) {
 			List<String> details = scrapedData.get(category);
@@ -188,31 +192,36 @@ public class JWSGLogic {
 					String existingData = new String(Files.readAllBytes(Paths.get(exportFileName)));
 
 					if (jsonData.equals(existingData)) {
-						showDialog(
-								"Die Daten für die Kategorie " + category
-										+ " haben sich nicht verändert und wurden bereits exportiert!",
-								"Hinweis", JOptionPane.INFORMATION_MESSAGE);
+						alreadyExported = true;
 
 						continue;
 					}
 				} catch (IOException e) {
-					showDialog("Fehler beim Überprüfen der exportierten Daten für " + category + "!", "Fehler",
-							JOptionPane.ERROR_MESSAGE);
+					exportFailed = true;
 
-					return;
+					continue;
 				}
 			}
 
 			try (FileWriter writer = new FileWriter(exportFileName)) {
 				writer.write(jsonData);
-				showDialog("Daten für die Kategorie " + category + " erfolgreich exportiert!", "Hinweis",
-						JOptionPane.INFORMATION_MESSAGE);
+				exportSuccess = true;
 			} catch (IOException e) {
-				showDialog("Fehler beim Exportieren der Daten für " + category + "!", "Fehler",
-						JOptionPane.ERROR_MESSAGE);
-
-				return;
+				exportFailed = true;
 			}
+		}
+
+		if (exportSuccess) {
+			showDialog("Daten erfolgreich exportiert!", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		}
+
+		if (exportFailed) {
+			showDialog("Beim Exportieren der Daten ist ein Fehler aufgetreten!", "Fehler", JOptionPane.ERROR_MESSAGE);
+		}
+
+		if (alreadyExported) {
+			showDialog("Die Daten wurden bereits exportiert und haben sich nicht verändert!", "Hinweis",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
