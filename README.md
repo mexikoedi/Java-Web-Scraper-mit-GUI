@@ -45,9 +45,9 @@ Die abgerufenen Daten:
 
 ## Entwicklerdokumentation
 ### Informationen zum Java-Projekt
-Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mit der Version „2024-09“ und im späteren Verlauf auch mit der Version „2024-12“ erstellt. <br>
+Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mit der Version „2024-12“ erstellt. <br>
 Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) mit der Version „22.0.2“ im Einsatz. <br>
-Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
+Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.3“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
 Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt und für die weitere Reaktionsfähigkeit der grafischen Oberfläche wurde „SwingWorker“ genutzt. <br>
 Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
@@ -96,7 +96,7 @@ Diese können durch das Ergänzen der folgenden zwei Dateien behoben werden: <br
 	</classpathentry>
 	<classpathentry excluding="module-info.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="rsc"/>
-	<classpathentry kind="lib" path="src/jsoup-1.18.1.jar"/>
+	<classpathentry kind="lib" path="src/jsoup-1.18.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
 ```
