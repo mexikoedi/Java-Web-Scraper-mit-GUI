@@ -54,7 +54,7 @@ Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
 
 ### Struktur des Projekts
 Der Ordner namens „rsc“ beinhaltet das Icon des Programms, welches „Icon.png“ bezeichnet wird. <br>
-Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.18.1.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
+Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.18.3.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
 Im Paket „jwsg“ befindet sich die Datei mit dem Namen „JWSGLayout.java“, welche die grafische Oberfläche beherbergt. <br>
 Die Datei namens „JWSGLogic.java“ ist für die Logik zuständig. <br>
 Zudem existiert noch die Datei namens „JWSGScrapingConfig.java“, welche die für das Scrapen benötigten URLs, Suchwörter und Webseitenelemente enthält. (Diese können bei Bedarf angepasst werden.)
