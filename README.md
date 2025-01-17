@@ -19,7 +19,7 @@ Mehrere Suchwörter können durch die Nutzung der Steuerungs- oder Umschalttaste
 Durch den Knopf „Abrufen“ werden die Informationen zu den davor ausgewählten Suchwörtern abgerufen, formatiert und entsprechend im Bereich „Daten“ angezeigt. <br>
 Es gibt zudem ein Textfeld, in welchem Sie Schlagwörter eingeben können, um so schnell, durch das Betätigen des „Suchen“-Knopfes, zu den entsprechenden Informationen zu gelangen. <br>
 Zudem wird im Programm nach dem Abrufen der Daten angezeigt, wie lange dies gedauert hat. <br>
-Außerdem wird der Datenabruf durch eine Fortschrittsanzeige begleitet <br>
+Außerdem wird der Datenabruf durch eine Fortschrittsanzeige begleitet. <br>
 Die abgerufenen Daten können anschließend zu JSON-Dateien exportiert und im „jwsg_export“-Ordner betrachtet werden. <br>
 Um die Leistung des Programms zu verbessern, wird Caching benutzt, um Daten, welche zuvor abgerufen wurden, innerhalb einer Stunde schnell wiederzuerhalten. <br>
 Die Cache-Dateien befinden sich im „jwsg_cache“-Ordner.
