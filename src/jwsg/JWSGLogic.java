@@ -352,14 +352,13 @@ public class JWSGLogic {
 							String titleSelector = JWSGScrapingConfig.getBulletinBoardTitleSelector(category);
 							String dateSelector = JWSGScrapingConfig.getBulletinBoardDateSelector(category);
 							String contentSelector = JWSGScrapingConfig.getBulletinBoardContentSelector(category);
-							String subcontentSelector = JWSGScrapingConfig.getBulletinBoardSubcontentSelector(category);
 							String nameSelector = JWSGScrapingConfig.getPersonNameSelector(category);
 							String groupSelector = JWSGScrapingConfig.getPersonGroupSelector(category);
 							String emailSelector = JWSGScrapingConfig.getPersonEmailSelector(category);
 							String programElementClass = JWSGScrapingConfig.getProgramElementClass();
 							String dateElementClass = JWSGScrapingConfig.getDateElementClass();
-							String bulletinBoardElementClass = JWSGScrapingConfig.getBulletinBoardElementClass();
 							String personElementClass = JWSGScrapingConfig.getPersonElementClass();
+							String bulletinBoardId = JWSGScrapingConfig.getBulletinBoardId();
 							String personPaginationToken = JWSGScrapingConfig.getPersonPaginationToken();
 							String personPaginationFormat = JWSGScrapingConfig.getPersonPaginationFormat();
 							String url = null;
@@ -370,7 +369,8 @@ public class JWSGLogic {
 							List<String> allScrapedData = new ArrayList<>();
 							List<String> scrapedData = new ArrayList<>();
 
-							if (elementClass.equals(personElementClass)) {
+							if (elementClass != null && !elementClass.isEmpty()
+									&& elementClass.equals(personElementClass)) {
 								int currentPage = 1;
 
 								while (true) {
@@ -411,22 +411,37 @@ public class JWSGLogic {
 								saveToCache(cacheFileName, allScrapedData);
 							} else {
 								website = Jsoup.connect(baseUrl).get();
-
-								if (elementClass.equals(programElementClass)) {
+								if (elementClass != null && !elementClass.isEmpty()
+										&& elementClass.equals(programElementClass)) {
 									scrapedData = processProgramData(website, category, elementClass, linkSelector);
-								} else if (elementClass.equals(dateElementClass)) {
+								} else if (elementClass != null && !elementClass.isEmpty()
+										&& elementClass.equals(dateElementClass)) {
 									scrapedData = processDateData(website, category, elementClass, container, id, tag);
-								} else if (elementClass.equals(bulletinBoardElementClass)) {
-									scrapedData = processBulletinBoardData(website, category, elementClass,
-											titleSelector, dateSelector, contentSelector, subcontentSelector);
+								} else if (id != null && !id.isEmpty() && id.equals(bulletinBoardId)) {
+									scrapedData = processBulletinBoardData(website, category, id, titleSelector,
+											dateSelector, contentSelector);
 								} else {
 									if (websiteElements == null || websiteElements.isEmpty()) {
-										showDialog(
-												"Keine Daten für " + category + " für das Element " + elementClass
-														+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
-												"Fehler", JOptionPane.ERROR_MESSAGE);
+										if (elementClass != null && !elementClass.isEmpty()) {
+											showDialog("Keine Daten für " + category + " für das Element "
+													+ elementClass
+													+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+													"Fehler", JOptionPane.ERROR_MESSAGE);
 
-										return;
+											return;
+										} else if (id != null && !id.isEmpty()) {
+											showDialog("Keine Daten für " + category + " für die Id " + id
+													+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+													"Fehler", JOptionPane.ERROR_MESSAGE);
+
+											return;
+										} else {
+											showDialog("Keine Daten für " + category
+													+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
+													"Fehler", JOptionPane.ERROR_MESSAGE);
+
+											return;
+										}
 									}
 								}
 
@@ -608,29 +623,26 @@ public class JWSGLogic {
 	 * Diese Methode wird verwendet, um die Daten der Schwarzen Bretter zu
 	 * extrahieren und zu verarbeiten.
 	 * 
-	 * @param website            Die Webseite, von der die Daten extrahiert werden
-	 *                           sollen.
-	 * @param category           Die Kategorie des Suchworts (Schwarze Bretter).
-	 * @param elementClass       Die Klasse der Elemente, die die Daten enthalten.
-	 * @param titleSelector      Der Selektor für die Titel der Schwarzen Bretter.
-	 * @param dateSelector       Der Selektor für die Daten der Schwarzen Bretter.
-	 * @param contentSelector    Der Selektor für den Inhalt der Schwarzen Bretter.
-	 * @param subcontentSelector Der Selektor für den Unterinhalt der Schwarzen
-	 *                           Bretter.
+	 * @param website         Die Webseite, von der die Daten extrahiert werden
+	 *                        sollen.
+	 * @param category        Die Kategorie des Suchworts (Schwarze Bretter).
+	 * @param id              Die Id welche die Elemente eines Schwarzen Bretts
+	 *                        enthält.
+	 * @param titleSelector   Der Selektor für die Titel der Schwarzen Bretter.
+	 * @param dateSelector    Der Selektor für die Daten der Schwarzen Bretter.
+	 * @param contentSelector Der Selektor für den Inhalt der Schwarzen Bretter.
 	 * @return Die Liste, die die extrahierten Daten enthält.
 	 */
-	private static List<String> processBulletinBoardData(Document website, String category, String elementClass,
-			String titleSelector, String dateSelector, String contentSelector, String subcontentSelector) {
-		Elements websiteElements = website.getElementsByClass(elementClass);
+	private static List<String> processBulletinBoardData(Document website, String category, String id,
+			String titleSelector, String dateSelector, String contentSelector) {
+		Elements websiteElements = website.getElementById(id).children();
 		Element titleElement = null;
 		Element dateElement = null;
-		Element contentElement = null;
-		Element subcontentElement = null;
+		Elements contentElements = null;
 		List<String> scrapedData = new ArrayList<>();
 		boolean foundValidTitle = false;
 		boolean foundValidDate = false;
 		boolean foundValidContent = false;
-		boolean foundValidSubcontent = false;
 
 		for (Element element : websiteElements) {
 			if (titleSelector == null || titleSelector.isEmpty()) {
@@ -663,26 +675,13 @@ public class JWSGLogic {
 				return new ArrayList<>();
 			}
 
-			contentElement = element.selectFirst(contentSelector);
+			contentElements = element.select(contentSelector);
 
-			if (contentElement != null) {
+			if (contentElements != null) {
 				foundValidContent = true;
 			}
 
-			if (subcontentSelector == null || subcontentSelector.isEmpty()) {
-				showDialog("Kein Subcontent Selector für " + category + " gefunden!", "Fehler",
-						JOptionPane.ERROR_MESSAGE);
-
-				return new ArrayList<>();
-			}
-
-			subcontentElement = element.selectFirst(subcontentSelector);
-
-			if (subcontentElement != null) {
-				foundValidSubcontent = true;
-			}
-
-			if (titleElement == null || dateElement == null || contentElement == null || subcontentElement == null) {
+			if (titleElement == null || dateElement == null || contentElements == null) {
 				continue;
 			}
 
@@ -691,15 +690,19 @@ public class JWSGLogic {
 			}
 
 			if (dateElement != null) {
-				scrapedData.add(dateElement.text().trim());
+				String date = dateElement.text().trim();
+
+				if (date.endsWith(")")) {
+					date = date.substring(0, date.length() - 1);
+				}
+
+				scrapedData.add(date);
 			}
 
-			if (contentElement != null) {
-				scrapedData.add(contentElement.text().trim());
-			}
-
-			if (subcontentElement != null) {
-				scrapedData.add(subcontentElement.text().trim());
+			if (contentElements != null) {
+				for (Element contentElement : contentElements) {
+					scrapedData.add(contentElement.text().trim());
+				}
 			}
 		}
 
@@ -724,15 +727,6 @@ public class JWSGLogic {
 		if (!foundValidContent) {
 			showDialog(
 					"Keine Daten für " + category + " für den Content Selector " + contentSelector
-							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
-					"Fehler", JOptionPane.ERROR_MESSAGE);
-
-			return new ArrayList<>();
-		}
-
-		if (!foundValidSubcontent) {
-			showDialog(
-					"Keine Daten für " + category + " für den Subcontent Selector " + subcontentSelector
 							+ " gefunden! Website-Struktur aktualisiert oder Tippfehler?",
 					"Fehler", JOptionPane.ERROR_MESSAGE);
 

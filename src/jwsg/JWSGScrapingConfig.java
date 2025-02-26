@@ -24,7 +24,6 @@ public class JWSGScrapingConfig {
 	private static final Map<String, String> bulletinBoardTitleSelectorMap = new HashMap<>();
 	private static final Map<String, String> bulletinBoardDateSelectorMap = new HashMap<>();
 	private static final Map<String, String> bulletinBoardContentSelectorMap = new HashMap<>();
-	private static final Map<String, String> bulletinBoardSubcontentSelectorMap = new HashMap<>();
 	// Map für Suchwörter und Selektoren für spezifische Links für Personen
 	private static final Map<String, String> personNameSelectorMap = new HashMap<>();
 	private static final Map<String, String> personGroupSelectorMap = new HashMap<>();
@@ -33,10 +32,10 @@ public class JWSGScrapingConfig {
 	private static final String programElementClass = "table__cell-title";
 	// Elementklasse für Semestertermine
 	private static final String dateElementClass = "c-tabs__content";
-	// Elementklasse für Schwarze Bretter
-	private static final String bulletinBoardElementClass = "ui-card ui-widget ui-widget-content ui-corner-all";
 	// Elementklasse für Personen
 	private static final String personElementClass = "c-users__table";
+	// Id für Schwarze Bretter
+	private static final String bulletinBoardId = "news";
 	// Typ für Schwarze Bretter
 	private static final String bulletinBoardType = "Schwarzes Brett";
 	// Typ für Personen
@@ -62,25 +61,22 @@ public class JWSGScrapingConfig {
 		keywordUrlMap.put("Terminübersicht - Sommersemester",
 				"https://www.h-ka.de/die-hochschule-karlsruhe/aktuelles/termine/semestertermine");
 		keywordUrlMap.put("Schwarzes Brett Informatik (Bachelor)",
-				"https://intranet.hka-iwi.de/info/bulletinboard/INFB");
+				"https://raumzeit.hka-iwi.de/bulletinboard/IWI/INFB");
 		keywordUrlMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
-				"https://intranet.hka-iwi.de/info/bulletinboard/MINB");
-		keywordUrlMap.put("Schwarzes Brett Informatik (Master)", "https://intranet.hka-iwi.de/info/bulletinboard/INFM");
+				"https://raumzeit.hka-iwi.de/bulletinboard/IWI/MINB");
+		keywordUrlMap.put("Schwarzes Brett Informatik (Master)", "https://raumzeit.hka-iwi.de/bulletinboard/IWI/INFM");
 		// Verwendete Elementklassen für die jeweiligen Suchwörter
 		keywordElementMap.put("Studiengänge Bachelor", "table__cell-title");
 		keywordElementMap.put("Studiengänge Master", "table__cell-title");
 		keywordElementMap.put("Terminübersicht - Wintersemester", "c-tabs__content");
 		keywordElementMap.put("Terminübersicht - Sommersemester", "c-tabs__content");
-		keywordElementMap.put("Schwarzes Brett Informatik (Bachelor)",
-				"ui-card ui-widget ui-widget-content ui-corner-all");
-		keywordElementMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
-				"ui-card ui-widget ui-widget-content ui-corner-all");
-		keywordElementMap.put("Schwarzes Brett Informatik (Master)",
-				"ui-card ui-widget ui-widget-content ui-corner-all");
 		// Container für die jeweiligen Suchwörter
 		keywordContainerMap.put("Terminübersicht - Wintersemester", "o-container o-container--spacing-y ");
 		keywordContainerMap.put("Terminübersicht - Sommersemester", "o-container o-container--spacing-y ");
 		// IDs für die jeweiligen Suchwörter
+		keywordIdMap.put("Schwarzes Brett Informatik (Bachelor)", "news");
+		keywordIdMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "news");
+		keywordIdMap.put("Schwarzes Brett Informatik (Master)", "news");
 		keywordIdMap.put("Terminübersicht - Wintersemester", "c36230");
 		keywordIdMap.put("Terminübersicht - Sommersemester", "c36419");
 		// Tags für die jeweiligen Suchwörter
@@ -93,21 +89,16 @@ public class JWSGScrapingConfig {
 		keywordSelectorMap.put("Studiengänge Bachelor", "a.c-in2studyfinder__link");
 		keywordSelectorMap.put("Studiengänge Master", "a.c-in2studyfinder__link");
 		// Selektoren für spezifische Links innerhalb der Elemente für Schwarzes Brett
-		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-title h2");
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-title div:first-child");
 		bulletinBoardDateSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-title span");
-		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-content h3");
-		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Informatik (Bachelor)",
-				"div.ui-card-content span.styleatags");
-		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-title h2");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Bachelor)", "div.ui-card-content");
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
+				"div.ui-card-title div:first-child");
 		bulletinBoardDateSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-title span");
-		bulletinBoardContentSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-content h3");
-		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)",
-				"div.ui-card-content span.styleatags");
-		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-title h2");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div.ui-card-content");
+		bulletinBoardTitleSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-title div:first-child");
 		bulletinBoardDateSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-title span");
-		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-content h3");
-		bulletinBoardSubcontentSelectorMap.put("Schwarzes Brett Informatik (Master)",
-				"div.ui-card-content span.styleatags");
+		bulletinBoardContentSelectorMap.put("Schwarzes Brett Informatik (Master)", "div.ui-card-content");
 		// Alle Personen
 		Map<String, String> personGroup = new HashMap<>();
 		personGroup.put("Ansprechperson für Antidiskriminierung", "25");
@@ -301,17 +292,6 @@ public class JWSGScrapingConfig {
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um den Schwarzes Brett Unterinhalt Selektor für
-	 * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
-	 *
-	 * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
-	 * @return Der Selektor für spezifische Links für das angegebene Suchwort.
-	 */
-	public static String getBulletinBoardSubcontentSelector(String keyword) {
-		return bulletinBoardSubcontentSelectorMap.get(keyword);
-	}
-
-	/**
 	 * Diese Methode wird verwendet, um den Personennamen Selektor für spezifische
 	 * Links für das angegebene Suchwort aus einer Map abzurufen.
 	 *
@@ -375,22 +355,21 @@ public class JWSGScrapingConfig {
 	}
 
 	/**
-	 * Diese Methode wird verwendet, um die Elementklasse für Schwarze Bretter zu
-	 * erhalten.
-	 * 
-	 * @return Die Elementklasse für Schwarze Bretter.
-	 */
-	public static String getBulletinBoardElementClass() {
-		return bulletinBoardElementClass;
-	}
-
-	/**
 	 * Diese Methode wird verwendet, um die Elementklasse für Personen zu erhalten.
 	 * 
 	 * @return Die Elementklasse für Personen.
 	 */
 	public static String getPersonElementClass() {
 		return personElementClass;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, um die Id für Schwarze Bretter zu erhalten.
+	 * 
+	 * @return Die Id für Schwarze Bretter.
+	 */
+	public static String getBulletinBoardId() {
+		return bulletinBoardId;
 	}
 
 	/**

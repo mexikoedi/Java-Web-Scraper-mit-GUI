@@ -327,15 +327,6 @@ public static String getBulletinBoardDateSelector(String keyword)
 public static String getBulletinBoardContentSelector(String keyword)
 
 /**
- * Diese Methode wird verwendet, um den Schwarzes Brett Unterinhalt Selektor für
- * spezifische Links für das angegebene Suchwort aus einer Map abzurufen.
- *
- * @param keyword Das Suchwort, für das der Selektor abgerufen werden soll.
- * @return Der Selektor für spezifische Links für das angegebene Suchwort.
- */
-public static String getBulletinBoardSubcontentSelector(String keyword)
-
-/**
  * Diese Methode wird verwendet, um den Personennamen Selektor für spezifische
  * Links für das angegebene Suchwort aus einer Map abzurufen.
  *
@@ -386,19 +377,18 @@ public static String getProgramElementClass()
 public static String getDateElementClass()
 
 /**
- * Diese Methode wird verwendet, um die Elementklasse für Schwarze Bretter zu
- * erhalten.
- * 
- * @return Die Elementklasse für Schwarze Bretter.
- */
-public static String getBulletinBoardElementClass()
-
-/**
  * Diese Methode wird verwendet, um die Elementklasse für Personen zu erhalten.
  * 
  * @return Die Elementklasse für Personen.
  */
 public static String getPersonElementClass()
+
+/**
+ * Diese Methode wird verwendet, um die Id für Schwarze Bretter zu erhalten.
+ * 
+ * @return Die Id für Schwarze Bretter.
+ */
+public static String getBulletinBoardId()
 
 /**
  * Diese Methode wird verwendet, um den Typ für Schwarze Bretter zu erhalten.

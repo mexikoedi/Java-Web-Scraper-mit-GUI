@@ -98,7 +98,6 @@ public class JWSGLayout {
 			String title = null;
 			String date = null;
 			String content = null;
-			String subcontent = null;
 			String name = null;
 			String group = null;
 			String email = null;
@@ -108,15 +107,10 @@ public class JWSGLayout {
 						.append("\n").append("=".repeat(category.length() + 2)).append("\n");
 				if (bulletinBoardType.equals(type)) {
 					// Gruppierung und Formatierung für Schwarzes Brett
-					for (int i = 0; i < details.size(); i += 4) {
+					for (int i = 0; i < details.size(); i += 3) {
 						title = i < details.size() ? details.get(i) : "";
 						date = (i + 1) < details.size() ? details.get(i + 1) : "";
 						content = (i + 2) < details.size() ? details.get(i + 2) : "";
-						subcontent = (i + 3) < details.size() ? details.get(i + 3) : "";
-
-						if (date.endsWith(")")) {
-							date = date.substring(0, date.length() - 1);
-						}
 
 						if (!title.isEmpty()) {
 							dataBuilder.append("Titel: ").append(title).append("\n");
@@ -128,10 +122,6 @@ public class JWSGLayout {
 
 						if (!content.isEmpty()) {
 							dataBuilder.append("Inhalt: ").append(content).append("\n");
-						}
-
-						if (!subcontent.isEmpty()) {
-							dataBuilder.append("Zusätzlicher Inhalt: ").append(subcontent).append("\n");
 						}
 
 						dataBuilder.append("\n");
