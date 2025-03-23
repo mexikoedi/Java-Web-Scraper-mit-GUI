@@ -635,7 +635,7 @@ public class JWSGLogic {
 	 */
 	private static List<String> processBulletinBoardData(Document website, String category, String id,
 			String titleSelector, String dateSelector, String contentSelector) {
-		Elements websiteElements = website.getElementById(id).children();
+		Elements websiteElements = website.select(id);
 		Element titleElement = null;
 		Element dateElement = null;
 		Elements contentElements = null;

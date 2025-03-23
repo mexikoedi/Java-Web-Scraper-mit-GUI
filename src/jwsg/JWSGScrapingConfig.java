@@ -35,7 +35,7 @@ public class JWSGScrapingConfig {
 	// Elementklasse für Personen
 	private static final String personElementClass = "c-users__table";
 	// Id für Schwarze Bretter
-	private static final String bulletinBoardId = "news";
+	private static final String bulletinBoardId = "div#news div.ui-tabs-panels > div.ui-tabs-panel > div.news-content";
 	// Typ für Schwarze Bretter
 	private static final String bulletinBoardType = "Schwarzes Brett";
 	// Typ für Personen
@@ -74,9 +74,9 @@ public class JWSGScrapingConfig {
 		keywordContainerMap.put("Terminübersicht - Wintersemester", "o-container o-container--spacing-y ");
 		keywordContainerMap.put("Terminübersicht - Sommersemester", "o-container o-container--spacing-y ");
 		// IDs für die jeweiligen Suchwörter
-		keywordIdMap.put("Schwarzes Brett Informatik (Bachelor)", "news");
-		keywordIdMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "news");
-		keywordIdMap.put("Schwarzes Brett Informatik (Master)", "news");
+		keywordIdMap.put("Schwarzes Brett Informatik (Bachelor)", "div#news div.ui-tabs-panels > div.ui-tabs-panel > div.news-content");
+		keywordIdMap.put("Schwarzes Brett Medieninformatik (Bachelor)", "div#news div.ui-tabs-panels > div.ui-tabs-panel > div.news-content");
+		keywordIdMap.put("Schwarzes Brett Informatik (Master)", "div#news div.ui-tabs-panels > div.ui-tabs-panel > div.news-content");
 		keywordIdMap.put("Terminübersicht - Wintersemester", "c36230");
 		keywordIdMap.put("Terminübersicht - Sommersemester", "c36419");
 		// Tags für die jeweiligen Suchwörter
