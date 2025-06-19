@@ -45,9 +45,9 @@ Die abgerufenen Daten:
 
 ## Entwicklerdokumentation
 ### Informationen zum Java-Projekt
-Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) mit der Version „2024-12“ erstellt. <br>
-Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) mit der Version „22.0.2“ im Einsatz. <br>
-Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) mit der Version „1.18.3“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
+Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) inital mit der Version „2024-12“ und später mit der Version „2025-03“ erstellt. <br>
+Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) intial mit der Version „22.0.2“ und später mit der Version „23.0.2“ im Einsatz. <br>
+Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) initial mit der Version „1.18.3“ und später mit der Version „1.20.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
 Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt und für die weitere Reaktionsfähigkeit der grafischen Oberfläche wurde „SwingWorker“ genutzt. <br>
 Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
