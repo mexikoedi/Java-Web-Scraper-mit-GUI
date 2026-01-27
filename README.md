@@ -45,16 +45,16 @@ Die abgerufenen Daten:
 
 ## Entwicklerdokumentation
 ### Informationen zum Java-Projekt
-Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) inital mit der Version „2024-12“ und später mit der Version „2025-06“ erstellt. <br>
-Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) intial mit der Version „22.0.2“ und später mit der Version „24.0.2“ im Einsatz. <br>
-Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) initial mit der Version „1.18.3“ und später mit der Version „1.21.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
+Dieses Java-Projekt wurde mithilfe der [Eclipse IDE](https://eclipseide.org/) initial mit der Version „2024-12“ und später mit der Version „2025-12“ erstellt. <br>
+Zudem war die [Java JDK](https://www.oracle.com/java/technologies/downloads/) initial mit der Version „22.0.2“ und später mit der Version „25.0.2“ im Einsatz. <br>
+Dazu wurde eine Drittanbieterbibliothek namens [jsoup](https://jsoup.org/download) initial mit der Version „1.18.3“ und später mit der Version „1.22.1“ verwendet, um verschiedene HTML-Operationen durchzuführen. <br>
 Es wurde [Eclipse WindowBuilder](https://projects.eclipse.org/projects/tools.windowbuilder) genutzt, um die grafische Oberfläche zu realisieren. <br>
 Aufgrund von Geschwindigkeitsverbesserungen wird das Abrufen von Informationen mithilfe von „Java Parallel Streams“ umgesetzt und für die weitere Reaktionsfähigkeit der grafischen Oberfläche wurde „SwingWorker“ genutzt. <br>
-Das Java-Projekt wurde mit der Compiler-Konformitätsstufe „22“ kompiliert.
+Das Java-Projekt wurde initial mit der Compiler-Konformitätsstufe „22“ und später mit „25“ kompiliert.
 
 ### Struktur des Projekts
 Der Ordner namens „rsc“ beinhaltet das Icon des Programms, welches „Icon.png“ bezeichnet wird. <br>
-Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.18.3.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
+Wobei der Ordner mit der Bezeichnung „src“ die jsoup-Bibliothek mit der Nennung „jsoup-1.22.1.jar“ und das Paket namens „jwsg“ beinhaltet. <br>
 Im Paket „jwsg“ befindet sich die Datei mit dem Namen „JWSGLayout.java“, welche die grafische Oberfläche beherbergt. <br>
 Die Datei namens „JWSGLogic.java“ ist für die Logik zuständig. <br>
 Zudem existiert noch die Datei namens „JWSGScrapingConfig.java“, welche die für das Scrapen benötigten URLs, Suchwörter und Webseitenelemente enthält. (Diese können bei Bedarf angepasst werden.)
@@ -96,7 +96,7 @@ Diese können durch das Ergänzen der folgenden zwei Dateien behoben werden: <br
 	</classpathentry>
 	<classpathentry excluding="module-info.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="rsc"/>
-	<classpathentry kind="lib" path="src/jsoup-1.18.3.jar"/>
+	<classpathentry kind="lib" path="src/jsoup-1.22.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
 ```
