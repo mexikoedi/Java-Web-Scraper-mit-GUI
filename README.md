@@ -10,7 +10,7 @@ Es muss vor der Benutzung dieses Programms [Java JDK 22](https://www.oracle.com/
 ### Installation des Programms
 Sie können das Programm herunterladen, indem Sie den grünen Knopf „Code“ und dann „ZIP herunterladen“ auswählen. <br> 
 Alternativ können Sie die ZIP-Datei über die Registerkarte „Releases“ herunterladen. <br>
-Anschließend entpacken/extrahieren Sie die Zip-Datei. <br>
+Anschließend entpacken/extrahieren Sie die ZIP-Datei. <br>
 Nun können Sie das Programm über die Datei namens „Java Web Scraper mit GUI.jar“ ausführen und benutzen.
 
 ### Verwendung des Programms
