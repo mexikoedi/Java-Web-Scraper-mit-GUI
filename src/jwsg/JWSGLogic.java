@@ -399,11 +399,11 @@ public class JWSGLogic {
                             int currentPage = 1;
 
                             while (true) {
-	                            	if (currentPage == 1) {
-	                            	    url = baseUrl;
-	                            	} else {
-	                            	    url = baseUrl + personPaginationFormat + currentPage;
-	                            	}
+                              if (currentPage == 1) {
+                                url = baseUrl;
+                              } else {
+                                url = baseUrl + personPaginationFormat + currentPage;
+                              }
 
                               try {
                                 website = Jsoup.connect(url).get();

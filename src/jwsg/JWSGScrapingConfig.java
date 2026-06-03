@@ -198,12 +198,14 @@ public class JWSGScrapingConfig {
       String encodedFilterValue = URLEncoder.encode(filterValue, StandardCharsets.UTF_8);
       // URL
       String baseUrl =
-    	        "https://www.h-ka.de/die-hochschule-karlsruhe/organisation-personen/personen-a-z"
-    	        + "?tx_solr%5Bfilter%5D%5B1%5D=" + encodedFilterValue
-    	        + "&tx_solr%5Bfilter%5D%5B2%5D="
-    	        + "&L=0"
-    	        + "&id=" + facilityId
-    	        + "&tx_solr%5Bq%5D=";
+          "https://www.h-ka.de/die-hochschule-karlsruhe/organisation-personen/personen-a-z"
+              + "?tx_solr%5Bfilter%5D%5B1%5D="
+              + encodedFilterValue
+              + "&tx_solr%5Bfilter%5D%5B2%5D="
+              + "&L=0"
+              + "&id="
+              + facilityId
+              + "&tx_solr%5Bq%5D=";
       keywordUrlMap.put(personKey, baseUrl);
       // Typ für Personen
       keywordTypeMap.put(personKey, "Personen");
