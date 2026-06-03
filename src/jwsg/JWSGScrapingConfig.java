@@ -1,6 +1,8 @@
 package jwsg;
 
 // Importe
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,10 +43,8 @@ public class JWSGScrapingConfig {
   private static final String bulletinBoardType = "Schwarzes Brett";
   // Typ für Personen
   private static final String personType = "Personen";
-  // Pagination Token für Personen
-  private static final String personPaginationToken = "?tx_users_pi1";
   // Pagination Format für Personen
-  private static final String personPaginationFormat = "/page-%d?tx_users_pi1";
+  private static final String personPaginationFormat = "&tx_solr%5Bpage%5D=";
 
   static {
     // Typen für die vordefinierten Suchwörter
@@ -126,73 +126,84 @@ public class JWSGScrapingConfig {
         "Schwarzes Brett Informatik (Master)", "div.ui-card-content");
     // Alle Personen
     Map<String, String> personGroup = new HashMap<>();
-    personGroup.put("Ansprechperson für Antidiskriminierung", "25");
-    personGroup.put("Ansprechperson sexuelle Belästigung", "34");
-    personGroup.put("Arbeitsicherheit", "98");
-    personGroup.put("Beauftrage*r für Studierende mit Behinderung", "29");
-    personGroup.put("Beschaffungsmanagement", "89");
-    personGroup.put("Bibliothek", "71");
-    personGroup.put("BW Institut für nachhaltige Mobilität", "66");
-    personGroup.put("Center of Applied Research", "72");
-    personGroup.put("Center of Competence", "73");
-    personGroup.put("Controlling", "99");
-    personGroup.put("Datenschutzbeauftragte*r", "23");
-    personGroup.put("Dezernat Entwicklung, Bau, Infrastruktur", "83");
-    personGroup.put("Dezernat für Akademische Angelegenheiten", "79");
-    personGroup.put("Fakultät für Architektur und Bauwesen", "35");
-    personGroup.put("Fakultät für Elektro- und Informationstechnik", "36");
-    personGroup.put("Fakultät für Informatik und Wirtschaftsinformatik", "38");
-    personGroup.put("Fakultät für Informationsmanagement und Medien", "37");
-    personGroup.put("Fakultät für Maschinenbau und Mechatronik", "39");
-    personGroup.put("Fakultät für Wirtschaftswissenschaften", "40");
-    personGroup.put("Finanzen", "90");
-    personGroup.put("Geschäftsstelle der Studienkommission für Hochschuldidaktik", "108");
-    personGroup.put("Gleichstellung - Centrum für Chancengleichheit", "26");
-    personGroup.put("Hochschulverwaltung", "153");
-    personGroup.put("Infrastruktur - Gebäudemanagement", "86");
-    personGroup.put("Institute of Materials and Processes", "56");
-    personGroup.put("Institut für Angewandte Forschung", "114");
-    personGroup.put("Institut für Digitale Materialforschung", "48");
-    personGroup.put("Institut für Energieeffiziente Mobilität", "49");
-    personGroup.put("Institut für Fremdsprachen", "62");
-    personGroup.put("Institut für Kälte-, Klima- und Umwelttechnik", "50");
-    personGroup.put("Institut für Lernen und Innovation in Netzwerken", "51");
-    personGroup.put("Institut für Robotik und Autonome Systeme", "189");
-    personGroup.put("Institut für Sensor- und Informationssysteme", "52");
-    personGroup.put("Institut für Thermofluiddynamik", "155");
-    personGroup.put("Institut für Ubiquitäre Mobilitätssysteme", "53");
-    personGroup.put("Institut für Verkehr und Infrastruktur", "54");
-    personGroup.put("Institut für Wissenschaftliche Weiterbildung", "64");
-    personGroup.put("Institut Intelligent Systems Research Group", "55");
-    personGroup.put("International Office", "91");
-    personGroup.put("Koordinierungsstelle für die Praktischen Studiensemester", "109");
-    personGroup.put("Personal", "92");
-    personGroup.put("Personalrat", "21");
-    personGroup.put("Presse und Kommunikation", "93");
-    personGroup.put("Projektmanagement-Office", "193");
-    personGroup.put("Qualitätsmanagement", "100");
-    personGroup.put("Rechenzentrum", "75");
-    personGroup.put("Referat für Technik- und Wissenschaftsethik", "110");
-    personGroup.put("Referenten, Hochschulgremien", "104");
-    personGroup.put("Rektorat", "13");
-    personGroup.put("Schwerbehindertenvertretung", "28");
-    personGroup.put("Senatsbeauftragte*r für ausländische Studierende", "31");
-    personGroup.put("Senatsbeauftragte*r für Didaktik", "33");
-    personGroup.put("Struktur und Organisation", "102");
-    personGroup.put("Studierendenbüro", "81");
-    personGroup.put("Zentrale Studienberatung", "80");
-    personGroup.put("Zentrum für Lehrinnovation", "82");
-    personGroup.put("Öffentliche Baustoffprüfstelle", "74");
+    personGroup.put("Ansprechperson für Antidiskriminierung", "473");
+    personGroup.put("Ansprechperson sexuelle Belästigung", "473");
+    personGroup.put("Arbeitsicherheit", "473");
+    personGroup.put("BW Institut für nachhaltige Mobilität", "473");
+    personGroup.put("Bau und Infrastruktur", "473");
+    personGroup.put("Beschaffungsmanagement", "473");
+    personGroup.put("Bibliothek", "473");
+    personGroup.put("Center of Applied Research", "473");
+    personGroup.put("Center of Competence", "473");
+    personGroup.put("Controlling", "473");
+    personGroup.put("Datenschutzbeauftragte*r", "473");
+    personGroup.put("Dezernat für Akademische Angelegenheiten", "473");
+    personGroup.put("Fakultät für Architektur und Bauwesen", "473");
+    personGroup.put("Fakultät für Elektro- und Informationstechnik", "473");
+    personGroup.put("Fakultät für Informatik und Wirtschaftsinformatik", "473");
+    personGroup.put("Fakultät für Informationsmanagement und Medien", "473");
+    personGroup.put("Fakultät für Maschinenbau und Mechatronik", "473");
+    personGroup.put("Fakultät für Wirtschaftswissenschaften", "473");
+    personGroup.put("Finanzen", "473");
+    personGroup.put("Geschäftsstelle der Studienkommission für Hochschuldidaktik", "473");
+    personGroup.put("Gleichstellung - Centrum für Chancengleichheit", "473");
+    personGroup.put("Hochschulverwaltung", "473");
+    personGroup.put("Informationssicherheitsbeauftragte*r", "473");
+    personGroup.put("Institut Intelligent Systems Research Group", "473");
+    personGroup.put("Institut für Angewandte Forschung", "473");
+    personGroup.put("Institut für Datenzentrierte Softwaresysteme", "473");
+    personGroup.put("Institut für Digitale Materialforschung", "473");
+    personGroup.put("Institut für Energieeffiziente Mobilität", "473");
+    personGroup.put("Institut für Fremdsprachen", "473");
+    personGroup.put("Institut für Intelligente Interaktion und Immersive Erfahrung", "473");
+    personGroup.put("Institut für Kälte-, Klima- und Umwelttechnik", "473");
+    personGroup.put("Institut für Lernen und Innovation in Netzwerken", "473");
+    personGroup.put("Institut für Robotik und Autonome Systeme", "473");
+    personGroup.put("Institut für Robotik und intelligente Produktionssysteme", "473");
+    personGroup.put("Institut für Thermofluiddynamik", "473");
+    personGroup.put("Institut für Verkehr und Infrastruktur", "473");
+    personGroup.put("Institut für Wissenschaftliche Weiterbildung", "473");
+    personGroup.put("Institute of Digital Economy and Venturing", "473");
+    personGroup.put("Institute of Materials and Processes", "473");
+    personGroup.put("International Office", "473");
+    personGroup.put("Koordinierungsstelle für die Praktischen Studiensemester", "473");
+    personGroup.put("Nachhaltige Entwicklung", "473");
+    personGroup.put("Personal", "473");
+    personGroup.put("Personalrat", "473");
+    personGroup.put("Presse und Kommunikation", "473");
+    personGroup.put("Projektmanagement-Office", "473");
+    personGroup.put("Qualitätsmanagement", "473");
+    personGroup.put("Rechenzentrum", "473");
+    personGroup.put("Referenten, Hochschulgremien", "473");
+    personGroup.put("Rektorat", "473");
+    personGroup.put("Schwerbehindertenvertretung", "473");
+    personGroup.put("Senatsbeauftragte*r für ausländische Studierende", "473");
+    personGroup.put("Struktur und Organisation", "473");
+    personGroup.put("Studierendenbüro", "473");
+    personGroup.put("Zentrale Studienberatung", "473");
+    personGroup.put("Zentrum für Lehrinnovation", "473");
+    personGroup.put("Zentrum für ethische Fragen im 21. Jahrhundert", "473");
+    personGroup.put("Öffentliche Baustoffprüfstelle", "473");
 
     // Dynamisches Erstellen der URL- und Selektor-Zuordnungen
     for (Map.Entry<String, String> entry : personGroup.entrySet()) {
-      String personKey = "Personen: " + entry.getKey();
-      String facilityValue = entry.getValue();
+      // Original-Bezeichnung aus der Map
+      String facilityName = entry.getKey();
+      // ID aus der Map
+      String facilityId = entry.getValue();
+      // Key, der intern verwendet wird
+      String personKey = "Personen: " + facilityName;
+      // Solr-Filterwert: "facility_stringM:Ansprechperson für Antidiskriminierung"
+      String filterValue = "facility_stringM:" + facilityName;
+      String encodedFilterValue = URLEncoder.encode(filterValue, StandardCharsets.UTF_8);
       // URL
       String baseUrl =
-          "https://www.h-ka.de/die-hochschule-karlsruhe/organisation-personen/personen-a-z?tx_users_pi1%5Bfilter%5D%5Bfacility%5D="
-              + facilityValue
-              + "&tx_users_pi1%5Bfilter%5D%5Bfunction%5D=&tx_users_pi1%5Bfilter%5D%5Bsearchterm%5D=&tx_users_pi1%5Bfilter%5D%5Babc%5D=#c18976";
+    	        "https://www.h-ka.de/die-hochschule-karlsruhe/organisation-personen/personen-a-z"
+    	        + "?tx_solr%5Bfilter%5D%5B1%5D=" + encodedFilterValue
+    	        + "&tx_solr%5Bfilter%5D%5B2%5D="
+    	        + "&L=0"
+    	        + "&id=" + facilityId
+    	        + "&tx_solr%5Bq%5D=";
       keywordUrlMap.put(personKey, baseUrl);
       // Typ für Personen
       keywordTypeMap.put(personKey, "Personen");
@@ -407,15 +418,6 @@ public class JWSGScrapingConfig {
    */
   public static String getPersonType() {
     return personType;
-  }
-
-  /**
-   * Diese Methode wird verwendet, um den Pagination Token für Personen zu erhalten.
-   *
-   * @return Der Pagination Token für Personen.
-   */
-  public static String getPersonPaginationToken() {
-    return personPaginationToken;
   }
 
   /**

@@ -383,8 +383,6 @@ public class JWSGLogic {
                           String dateElementClass = JWSGScrapingConfig.getDateElementClass();
                           String personElementClass = JWSGScrapingConfig.getPersonElementClass();
                           String bulletinBoardId = JWSGScrapingConfig.getBulletinBoardId();
-                          String personPaginationToken =
-                              JWSGScrapingConfig.getPersonPaginationToken();
                           String personPaginationFormat =
                               JWSGScrapingConfig.getPersonPaginationFormat();
                           String url = null;
@@ -401,12 +399,11 @@ public class JWSGLogic {
                             int currentPage = 1;
 
                             while (true) {
-                              url =
-                                  (currentPage == 1)
-                                      ? baseUrl
-                                      : baseUrl.replace(
-                                          personPaginationToken,
-                                          String.format(personPaginationFormat, currentPage));
+	                            	if (currentPage == 1) {
+	                            	    url = baseUrl;
+	                            	} else {
+	                            	    url = baseUrl + personPaginationFormat + currentPage;
+	                            	}
 
                               try {
                                 website = Jsoup.connect(url).get();
