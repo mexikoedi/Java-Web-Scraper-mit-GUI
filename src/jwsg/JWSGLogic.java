@@ -311,10 +311,9 @@ public class JWSGLogic {
             // Startzeit für die Verarbeitungsdauer
             startTime = System.currentTimeMillis();
             // Setze die interaktiven Komponenten auf inaktiv
-            SwingUtilities.invokeLater(
-                () -> {
-                  JWSGLayout.setStatusInteractiveComponents(false);
-                });
+            SwingUtilities.invokeLater(() -> {
+              JWSGLayout.setStatusInteractiveComponents(false);
+            });
             // Map leeren
             scrapedDataMap.clear();
             // Maximale Anzahl von Anfragen vor der Pause
@@ -334,204 +333,200 @@ public class JWSGLogic {
 
             // Parallele Verarbeitung der ausgewählten Suchwörter mit ihren URLs (Streams)
             categories.parallelStream()
-                .forEach(
-                    category -> {
-                      String baseUrl = JWSGScrapingConfig.getUrl(category);
-                      String cacheFileName = getCacheFileName(category);
-                      boolean cached = isCacheValid(cacheFileName, cachedTime);
+                .forEach(category -> {
+                  String baseUrl = JWSGScrapingConfig.getUrl(category);
+                  String cacheFileName = getCacheFileName(category);
+                  boolean cached = isCacheValid(cacheFileName, cachedTime);
 
-                      /*
-                       * Synchronieren der Verzögerung, um zu vermeiden, dass mehrere Threads
-                       * gleichzeitig pausieren
-                       */
-                      synchronized (requestCounter) {
-                        /*
-                         * Pause, wenn der Anforderungszähler die Batchgröße erreicht und es nicht
-                         * gecached ist
-                         */
-                        if (requestCounter.incrementAndGet() % batchSize == 0 && !cached) {
-                          try {
-                            Thread.sleep(delayMillis);
-                          } catch (InterruptedException e) {
-                            // Wiederherstellen des unterbrochenen Status
-                            Thread.currentThread().interrupt();
-                          }
-                        }
-                      }
-
+                  /*
+                   * Synchronieren der Verzögerung, um zu vermeiden, dass mehrere Threads
+                   * gleichzeitig pausieren
+                   */
+                  synchronized (requestCounter) {
+                    /*
+                     * Pause, wenn der Anforderungszähler die Batchgröße erreicht und es nicht
+                     * gecached ist
+                     */
+                    if (requestCounter.incrementAndGet() % batchSize == 0 && !cached) {
                       try {
-                        if (cached) {
-                          scrapedDataMap.put(category, loadFromCache(cacheFileName));
-                        } else {
-                          String elementClass = JWSGScrapingConfig.getElementClass(category);
-                          String container = JWSGScrapingConfig.getContainer(category);
-                          String id = JWSGScrapingConfig.getId(category);
-                          String tag = JWSGScrapingConfig.getTag(category);
-                          String linkSelector = JWSGScrapingConfig.getSelector(category);
-                          String titleSelector =
-                              JWSGScrapingConfig.getBulletinBoardTitleSelector(category);
-                          String dateSelector =
-                              JWSGScrapingConfig.getBulletinBoardDateSelector(category);
-                          String contentSelector =
-                              JWSGScrapingConfig.getBulletinBoardContentSelector(category);
-                          String nameSelector = JWSGScrapingConfig.getPersonNameSelector(category);
-                          String groupSelector =
-                              JWSGScrapingConfig.getPersonGroupSelector(category);
-                          String emailSelector =
-                              JWSGScrapingConfig.getPersonEmailSelector(category);
-                          String programElementClass = JWSGScrapingConfig.getProgramElementClass();
-                          String dateElementClass = JWSGScrapingConfig.getDateElementClass();
-                          String personElementClass = JWSGScrapingConfig.getPersonElementClass();
-                          String bulletinBoardId = JWSGScrapingConfig.getBulletinBoardId();
-                          String personPaginationFormat =
-                              JWSGScrapingConfig.getPersonPaginationFormat();
-                          String url = null;
-                          Document website = null;
-                          Elements websiteElements = null;
-                          List<String> currentPageData = new ArrayList<>();
-                          List<String> previousPageData = new ArrayList<>();
-                          List<String> allScrapedData = new ArrayList<>();
-                          List<String> scrapedData = new ArrayList<>();
+                        Thread.sleep(delayMillis);
+                      } catch (InterruptedException e) {
+                        // Wiederherstellen des unterbrochenen Status
+                        Thread.currentThread().interrupt();
+                      }
+                    }
+                  }
 
-                          if (elementClass != null
-                              && !elementClass.isEmpty()
-                              && elementClass.equals(personElementClass)) {
-                            int currentPage = 1;
+                  try {
+                    if (cached) {
+                      scrapedDataMap.put(category, loadFromCache(cacheFileName));
+                    } else {
+                      String elementClass = JWSGScrapingConfig.getElementClass(category);
+                      String container = JWSGScrapingConfig.getContainer(category);
+                      String id = JWSGScrapingConfig.getId(category);
+                      String tag = JWSGScrapingConfig.getTag(category);
+                      String linkSelector = JWSGScrapingConfig.getSelector(category);
+                      String titleSelector =
+                          JWSGScrapingConfig.getBulletinBoardTitleSelector(category);
+                      String dateSelector =
+                          JWSGScrapingConfig.getBulletinBoardDateSelector(category);
+                      String contentSelector =
+                          JWSGScrapingConfig.getBulletinBoardContentSelector(category);
+                      String nameSelector = JWSGScrapingConfig.getPersonNameSelector(category);
+                      String groupSelector = JWSGScrapingConfig.getPersonGroupSelector(category);
+                      String emailSelector = JWSGScrapingConfig.getPersonEmailSelector(category);
+                      String programElementClass = JWSGScrapingConfig.getProgramElementClass();
+                      String dateElementClass = JWSGScrapingConfig.getDateElementClass();
+                      String personElementClass = JWSGScrapingConfig.getPersonElementClass();
+                      String bulletinBoardId = JWSGScrapingConfig.getBulletinBoardId();
+                      String personPaginationFormat =
+                          JWSGScrapingConfig.getPersonPaginationFormat();
+                      String url = null;
+                      Document website = null;
+                      Elements websiteElements = null;
+                      List<String> currentPageData = new ArrayList<>();
+                      List<String> previousPageData = new ArrayList<>();
+                      List<String> allScrapedData = new ArrayList<>();
+                      List<String> scrapedData = new ArrayList<>();
 
-                            while (true) {
-                              if (currentPage == 1) {
-                                url = baseUrl;
-                              } else {
-                                url = baseUrl + personPaginationFormat + currentPage;
-                              }
+                      if (elementClass != null
+                          && !elementClass.isEmpty()
+                          && elementClass.equals(personElementClass)) {
+                        int currentPage = 1;
 
-                              try {
-                                website = Jsoup.connect(url).get();
-                              } catch (IOException e) {
-                                showDialog(
-                                    "Die URL "
-                                        + url
-                                        + " ist nicht verfügbar! Tippfehler? Versuchen Sie es"
-                                        + " später erneut!",
-                                    "Fehler",
-                                    JOptionPane.ERROR_MESSAGE);
-
-                                break;
-                              }
-
-                              websiteElements = website.getElementsByClass(elementClass);
-
-                              if (websiteElements == null || websiteElements.isEmpty()) {
-                                break;
-                              }
-
-                              currentPageData =
-                                  processPersonData(
-                                      website,
-                                      category,
-                                      elementClass,
-                                      tag,
-                                      nameSelector,
-                                      groupSelector,
-                                      emailSelector);
-
-                              if (currentPageData == null
-                                  || currentPageData.isEmpty()
-                                  || currentPageData.equals(previousPageData)) {
-                                break;
-                              }
-
-                              allScrapedData.addAll(currentPageData);
-                              previousPageData = new ArrayList<>(currentPageData);
-                              currentPage++;
-                            }
-
-                            scrapedDataMap.put(category, allScrapedData);
-                            saveToCache(cacheFileName, allScrapedData);
+                        while (true) {
+                          if (currentPage == 1) {
+                            url = baseUrl;
                           } else {
-                            website = Jsoup.connect(baseUrl).get();
-                            if (elementClass != null
-                                && !elementClass.isEmpty()
-                                && elementClass.equals(programElementClass)) {
-                              scrapedData =
-                                  processProgramData(website, category, elementClass, linkSelector);
-                            } else if (elementClass != null
-                                && !elementClass.isEmpty()
-                                && elementClass.equals(dateElementClass)) {
-                              scrapedData =
-                                  processDateData(
-                                      website, category, elementClass, container, id, tag);
-                            } else if (id != null && !id.isEmpty() && id.equals(bulletinBoardId)) {
-                              scrapedData =
-                                  processBulletinBoardData(
-                                      website,
-                                      category,
-                                      id,
-                                      titleSelector,
-                                      dateSelector,
-                                      contentSelector);
+                            url = baseUrl + personPaginationFormat + currentPage;
+                          }
+
+                          try {
+                            website = Jsoup.connect(url).get();
+                          } catch (IOException e) {
+                            showDialog(
+                                "Die URL "
+                                    + url
+                                    + " ist nicht verfügbar! Tippfehler? Versuchen Sie es"
+                                    + " später erneut!",
+                                "Fehler",
+                                JOptionPane.ERROR_MESSAGE);
+
+                            break;
+                          }
+
+                          websiteElements = website.getElementsByClass(elementClass);
+
+                          if (websiteElements == null || websiteElements.isEmpty()) {
+                            break;
+                          }
+
+                          currentPageData =
+                              processPersonData(
+                                  website,
+                                  category,
+                                  elementClass,
+                                  tag,
+                                  nameSelector,
+                                  groupSelector,
+                                  emailSelector);
+
+                          if (currentPageData == null
+                              || currentPageData.isEmpty()
+                              || currentPageData.equals(previousPageData)) {
+                            break;
+                          }
+
+                          allScrapedData.addAll(currentPageData);
+                          previousPageData = new ArrayList<>(currentPageData);
+                          currentPage++;
+                        }
+
+                        scrapedDataMap.put(category, allScrapedData);
+                        saveToCache(cacheFileName, allScrapedData);
+                      } else {
+                        website = Jsoup.connect(baseUrl).get();
+                        if (elementClass != null
+                            && !elementClass.isEmpty()
+                            && elementClass.equals(programElementClass)) {
+                          scrapedData =
+                              processProgramData(website, category, elementClass, linkSelector);
+                        } else if (elementClass != null
+                            && !elementClass.isEmpty()
+                            && elementClass.equals(dateElementClass)) {
+                          scrapedData =
+                              processDateData(website, category, elementClass, container, id, tag);
+                        } else if (id != null && !id.isEmpty() && id.equals(bulletinBoardId)) {
+                          scrapedData =
+                              processBulletinBoardData(
+                                  website,
+                                  category,
+                                  id,
+                                  titleSelector,
+                                  dateSelector,
+                                  contentSelector);
+                        } else {
+                          if (websiteElements == null || websiteElements.isEmpty()) {
+                            if (elementClass != null && !elementClass.isEmpty()) {
+                              showDialog(
+                                  "Keine Daten für "
+                                      + category
+                                      + " für das Element "
+                                      + elementClass
+                                      + " gefunden! Website-Struktur aktualisiert oder"
+                                      + " Tippfehler?",
+                                  "Fehler",
+                                  JOptionPane.ERROR_MESSAGE);
+
+                              return;
+                            } else if (id != null && !id.isEmpty()) {
+                              showDialog(
+                                  "Keine Daten für "
+                                      + category
+                                      + " für die Id "
+                                      + id
+                                      + " gefunden! Website-Struktur aktualisiert oder"
+                                      + " Tippfehler?",
+                                  "Fehler",
+                                  JOptionPane.ERROR_MESSAGE);
+
+                              return;
                             } else {
-                              if (websiteElements == null || websiteElements.isEmpty()) {
-                                if (elementClass != null && !elementClass.isEmpty()) {
-                                  showDialog(
-                                      "Keine Daten für "
-                                          + category
-                                          + " für das Element "
-                                          + elementClass
-                                          + " gefunden! Website-Struktur aktualisiert oder"
-                                          + " Tippfehler?",
-                                      "Fehler",
-                                      JOptionPane.ERROR_MESSAGE);
+                              showDialog(
+                                  "Keine Daten für "
+                                      + category
+                                      + " gefunden! Website-Struktur aktualisiert oder"
+                                      + " Tippfehler?",
+                                  "Fehler",
+                                  JOptionPane.ERROR_MESSAGE);
 
-                                  return;
-                                } else if (id != null && !id.isEmpty()) {
-                                  showDialog(
-                                      "Keine Daten für "
-                                          + category
-                                          + " für die Id "
-                                          + id
-                                          + " gefunden! Website-Struktur aktualisiert oder"
-                                          + " Tippfehler?",
-                                      "Fehler",
-                                      JOptionPane.ERROR_MESSAGE);
-
-                                  return;
-                                } else {
-                                  showDialog(
-                                      "Keine Daten für "
-                                          + category
-                                          + " gefunden! Website-Struktur aktualisiert oder"
-                                          + " Tippfehler?",
-                                      "Fehler",
-                                      JOptionPane.ERROR_MESSAGE);
-
-                                  return;
-                                }
-                              }
+                              return;
                             }
-
-                            scrapedDataMap.put(category, scrapedData);
-                            saveToCache(cacheFileName, scrapedData);
                           }
                         }
-                      } catch (IOException e) {
-                        showDialog(
-                            "Fehler beim Abrufen der Daten für "
-                                + category
-                                + "! Tippfehler? Versuchen Sie es später erneut!",
-                            "Fehler",
-                            JOptionPane.ERROR_MESSAGE);
 
-                        return;
+                        scrapedDataMap.put(category, scrapedData);
+                        saveToCache(cacheFileName, scrapedData);
                       }
+                    }
+                  } catch (IOException e) {
+                    showDialog(
+                        "Fehler beim Abrufen der Daten für "
+                            + category
+                            + "! Tippfehler? Versuchen Sie es später erneut!",
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
 
-                      // Fortschritt aktualisieren und in Prozent umwandeln
-                      int currentProgress = progress.incrementAndGet();
-                      int progressPercentage =
-                          (int) ((currentProgress / (double) totalCategories) * 100);
-                      // Fortschritt veröffentlichen und an GUI senden (SwingWorker)
-                      publish(progressPercentage);
-                    });
+                    return;
+                  }
+
+                  // Fortschritt aktualisieren und in Prozent umwandeln
+                  int currentProgress = progress.incrementAndGet();
+                  int progressPercentage =
+                      (int) ((currentProgress / (double) totalCategories) * 100);
+                  // Fortschritt veröffentlichen und an GUI senden (SwingWorker)
+                  publish(progressPercentage);
+                });
 
             return null;
           }
@@ -548,11 +543,10 @@ public class JWSGLogic {
           protected void done() {
             // Aktualisiere die GUI mit den gescrapten Daten und setze die interaktiven
             // Komponenten auf aktiv
-            SwingUtilities.invokeLater(
-                () -> {
-                  JWSGLayout.initData(lastSelectedCategories, scrapedDataMap);
-                  JWSGLayout.setStatusInteractiveComponents(true);
-                });
+            SwingUtilities.invokeLater(() -> {
+              JWSGLayout.initData(lastSelectedCategories, scrapedDataMap);
+              JWSGLayout.setStatusInteractiveComponents(true);
+            });
 
             // Endzeit für die Verarbeitungsdauer
             long endTime = System.currentTimeMillis();

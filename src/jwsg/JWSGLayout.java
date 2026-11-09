@@ -224,10 +224,9 @@ public class JWSGLayout {
     if (btnDataExport == null) {
       btnDataExport = new JButton("Datenexport");
       btnDataExport.setFont(new Font("Calibri", Font.PLAIN, 14));
-      btnDataExport.addActionListener(
-          _ -> {
-            JWSGLogic.exportData(scrapedData);
-          });
+      btnDataExport.addActionListener(_ -> {
+        JWSGLogic.exportData(scrapedData);
+      });
       GridBagConstraints gbc_btnDataExport = new GridBagConstraints();
       gbc_btnDataExport.insets = new Insets(0, 5, 20, 5);
       gbc_btnDataExport.fill = GridBagConstraints.HORIZONTAL;
@@ -280,10 +279,9 @@ public class JWSGLayout {
 
   /** Diese Methode setzt den Fortschrittsbalken zurück. */
   public static void resetProgressBar() {
-    EventQueue.invokeLater(
-        () -> {
-          progressBar.setValue(0);
-        });
+    EventQueue.invokeLater(() -> {
+      progressBar.setValue(0);
+    });
   }
 
   /**
@@ -292,10 +290,9 @@ public class JWSGLayout {
    * @param visible Der Wert, ob der Fortschrittsbalken sichtbar oder unsichtbar ist.
    */
   public static void setProgressBarVisible(boolean visible) {
-    EventQueue.invokeLater(
-        () -> {
-          progressBar.setVisible(visible);
-        });
+    EventQueue.invokeLater(() -> {
+      progressBar.setVisible(visible);
+    });
   }
 
   /**
@@ -304,10 +301,9 @@ public class JWSGLayout {
    * @param progress Der Wert, um den der Fortschrittsbalken aktualisiert wird.
    */
   public static void updateProgressBar(int progress) {
-    EventQueue.invokeLater(
-        () -> {
-          progressBar.setValue(progress);
-        });
+    EventQueue.invokeLater(() -> {
+      progressBar.setValue(progress);
+    });
   }
 
   /**
@@ -444,36 +440,33 @@ public class JWSGLayout {
     popupMenu.add(popupScrollPane);
     // ActionListener für JButton btnDropdown hinzufügen und JScrollPane
     // popupScrollPane anpassen
-    btnDropdown.addActionListener(
-        _ -> {
-          int buttonWidth = btnDropdown.getWidth() - 5;
-          int rowHeight = listData.getCellBounds(0, 0).height;
-          int visibleRowCount = Math.min(listData.getModel().getSize(), 10);
-          int popupHeight = visibleRowCount * rowHeight;
-          popupScrollPane.setPreferredSize(new Dimension(buttonWidth, popupHeight));
-          popupMenu.show(btnDropdown, 0, btnDropdown.getHeight());
-        });
+    btnDropdown.addActionListener(_ -> {
+      int buttonWidth = btnDropdown.getWidth() - 5;
+      int rowHeight = listData.getCellBounds(0, 0).height;
+      int visibleRowCount = Math.min(listData.getModel().getSize(), 10);
+      int popupHeight = visibleRowCount * rowHeight;
+      popupScrollPane.setPreferredSize(new Dimension(buttonWidth, popupHeight));
+      popupMenu.show(btnDropdown, 0, btnDropdown.getHeight());
+    });
     // ListSelectionListener für JList<String> listData hinzufügen
-    listData.addListSelectionListener(
-        e -> {
-          if (!e.getValueIsAdjusting()) {
-            List<String> selectedValues = listData.getSelectedValuesList();
-            String selectedText = String.join(", ", selectedValues);
-            btnDropdown.setText(selectedText.isEmpty() ? "Optionen auswählen" : selectedText);
-          }
-        });
+    listData.addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting()) {
+        List<String> selectedValues = listData.getSelectedValuesList();
+        String selectedText = String.join(", ", selectedValues);
+        btnDropdown.setText(selectedText.isEmpty() ? "Optionen auswählen" : selectedText);
+      }
+    });
     // JButton btnData für GridBagLayout anpassen, ActionListener einführen und zum
     // Panel hinzufügen
     btnData = new JButton("Abrufen");
     btnData.setFont(new Font("Calibri", Font.PLAIN, 14));
-    btnData.addActionListener(
-        _ -> {
-          boolean scraped = JWSGLogic.checkButtonPressed(listData.getSelectedValuesList());
+    btnData.addActionListener(_ -> {
+      boolean scraped = JWSGLogic.checkButtonPressed(listData.getSelectedValuesList());
 
-          if (dataTextArea != null && scraped) {
-            panel.remove(dataScrollPane);
-          }
-        });
+      if (dataTextArea != null && scraped) {
+        panel.remove(dataScrollPane);
+      }
+    });
     GridBagConstraints gbc_btnData = new GridBagConstraints();
     gbc_btnData.gridx = 3;
     gbc_btnData.gridy = 2;
